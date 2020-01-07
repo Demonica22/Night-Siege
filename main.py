@@ -33,7 +33,7 @@ class Board:
                     self.screen.blit(LEVEL_ENDING, (x, y))
                 elif self.board[elem][cell] == "@":
                     self.screen.blit(START, (x, y))
-                    self.start_pos = (x, y)
+                    self.start_pos = (x , y)
                 pygame.draw.rect(self.screen, (0, 0, 0), (x, y, self.cell_size, self.cell_size), 1)
         self.screen.blit(CHEST, (self.width - CHEST.get_width(), 0))
 
@@ -53,7 +53,14 @@ all_enemies = pygame.sprite.Group()
 enemy = Enemy(all_enemies, board)
 all_enemies.draw(screen)
 pygame.display.flip()
+clock = pygame.time.Clock()
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    screen.fill((0, 0, 0))
+    board.render()
+    all_enemies.draw(screen)
+    all_enemies.update()
+    pygame.display.flip()
+    clock.tick(30)
