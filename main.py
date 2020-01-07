@@ -1,23 +1,41 @@
 import pygame
+from enemies import Enemy
 
 pygame.init()
+
+WALL = pygame.image.load('data/wall.png')
+WALKWAY = pygame.image.load('data/walkway.jpg')
+LEVEL_ENDING = pygame.image.load('data/end.jpg')
+CHEST = pygame.image.load('data/shop.png')
+START = pygame.image.load('data/start.jpg')
 
 
 class Board:
     def __init__(self, width, height, board, screen):
-        self.screen = screen
-        pygame.display.set_mode((width * 30, height * 30))
-        self.width = width
-        self.height = height
-        self.board = board
         self.cell_size = 30
+        self.screen = screen
+        pygame.display.set_mode((width * 30, height * 30 + 60))
+        self.offset = (0, 60)
+        self.width = width * self.cell_size
+        self.height = height * self.cell_size
+        self.board = board
 
     def render(self):
         for elem in range(len(self.board)):
             for cell in range(len(self.board[elem])):
                 x = cell * self.cell_size
-                y = elem * self.cell_size
-                pygame.draw.rect(self.screen, (255, 255, 255), (x, y, self.cell_size, self.cell_size), 1)
+                y = self.offset[1] + elem * self.cell_size
+                if self.board[elem][cell] == "#":
+                    self.screen.blit(WALL, (x, y))
+                elif self.board[elem][cell] == "0":
+                    self.screen.blit(WALKWAY, (x, y))
+                elif self.board[elem][cell] == "X":
+                    self.screen.blit(LEVEL_ENDING, (x, y))
+                elif self.board[elem][cell] == "@":
+                    self.screen.blit(START, (x, y))
+                    self.start_pos = (x, y)
+                pygame.draw.rect(self.screen, (0, 0, 0), (x, y, self.cell_size, self.cell_size), 1)
+        self.screen.blit(CHEST, (self.width - CHEST.get_width(), 0))
 
 
 def scan_level(level_file_name):
@@ -28,12 +46,13 @@ def scan_level(level_file_name):
 
 screen = pygame.display.set_mode((600, 600))
 board = Board(*scan_level("new_level"), screen)
-print(board.board, board.height)
 running = True
 screen.fill((0, 0, 0))
 board.render()
+all_enemies = pygame.sprite.Group()
+enemy = Enemy(all_enemies, board)
+all_enemies.draw(screen)
 pygame.display.flip()
-clock = pygame.time.Clock()
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
