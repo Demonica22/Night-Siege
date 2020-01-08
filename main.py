@@ -62,9 +62,9 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = event.pos
-            if board.offset[1] <= (pos[1] - board.offset[1]) // 30 < board.offset[1] + len(
+            if board.offset[1] <= pos[1] <= board.offset[1] + len(
                     board.board) * board.cell_size and \
-                    0 <= (pos[0] - board.offset[0]) // 30 < len(board.board[0]) * board.cell_size and \
+                    0 <= pos[0] <= len(board.board[0]) * board.cell_size and \
                     board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
                 tower = Tower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
                 all_towers.add(tower)
