@@ -58,7 +58,6 @@ running = True
 screen.fill((0, 0, 0))
 board.render()
 all_enemies = pygame.sprite.Group()
-
 enemy = Enemy(all_enemies, board)
 all_towers = pygame.sprite.Group()
 clock = pygame.time.Clock()
@@ -68,9 +67,8 @@ current_time = 0
 tower1 = False
 while running:
     current_time += 0.5
-    if len(all_enemies) != current_wave * 5 and current_time % 20 == 0:
+    if len(all_enemies) < current_wave * 5 and current_time % 20 == 0:
         enemy = Enemy(all_enemies, board)
-        all_enemies.add(enemy)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
