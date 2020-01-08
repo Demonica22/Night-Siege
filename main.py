@@ -1,6 +1,7 @@
 import pygame
 from enemies import Enemy
 from tower import Tower, TowerStrong, TowerLite
+
 pygame.init()
 
 WALL = pygame.image.load('data/wall.png')
@@ -108,4 +109,4 @@ while running:
         current_wave += 1
         all_enemies = pygame.sprite.Group()
     pygame.display.flip()
-    clock.tick(10)
+    clock.tick(5)

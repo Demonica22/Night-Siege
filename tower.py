@@ -12,7 +12,7 @@ class Tower(pygame.sprite.Sprite):
         self.image = TOWER
         self.rect = self.image.get_rect()
         self.board = board
-        self.x, self.y = coords
+        self.rect.x, self.rect.y = coords
 
 
 class TowerLite(Tower):
@@ -21,7 +21,7 @@ class TowerLite(Tower):
         self.image = TOWER
         self.board = board
         self.rect = self.image.get_rect()
-        self.x, self.y = coords
+        self.rect.x, self.rect.y = coords
 
 
 class TowerStrong(Tower):
@@ -30,4 +30,4 @@ class TowerStrong(Tower):
         self.image = TOWERS
         self.board = board
         self.rect = self.image.get_rect()
-        self.x, self.y = coords
+        self.rect.x, self.rect.y = coords
