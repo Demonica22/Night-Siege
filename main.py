@@ -7,8 +7,9 @@ pygame.init()
 WALL = pygame.image.load('data/wall.png')
 WALKWAY = pygame.image.load('data/walkway.jpg')
 LEVEL_ENDING = pygame.image.load('data/end.jpg')
-CHEST = pygame.image.load('data/shop.png')
+COINS = pygame.image.load('data/coins.png')
 START = pygame.image.load('data/start.jpg')
+TOWER = pygame.image.load('data/BigTower.jpg')
 
 
 class Board:
@@ -20,6 +21,7 @@ class Board:
         self.width = width * self.cell_size
         self.height = height * self.cell_size
         self.board = board
+        self.current_money = 5
 
     def render(self):
         for elem in range(len(self.board)):
@@ -36,7 +38,13 @@ class Board:
                     self.screen.blit(START, (x, y))
                     self.start_pos = (x, y)
                 pygame.draw.rect(self.screen, (0, 0, 0), (x, y, self.cell_size, self.cell_size), 1)
-        self.screen.blit(CHEST, (self.width - CHEST.get_width(), 0))
+        self.screen.blit(COINS, (self.width - COINS.get_width(), 0))
+        self.screen.blit(TOWER, (0, 0))
+        font = pygame.font.Font(None, 30)
+        text = font.render("5", 1, (100, 255, 100))
+        screen.blit(text, (15, 40))
+        moneytext = font.render(str(self.current_money), 1, (100, 255, 100))
+        screen.blit(moneytext, (self.width - (COINS.get_width() // 1.2), 40))
 
 
 def scan_level(level_file_name):
@@ -62,9 +70,16 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = event.pos
-            if board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
+            if 0 <= pos[0] <= 40 and 0 <= pos[1] <= 40 and board.current_money >= 5:
+                board.current_money -= 5
+                tower1 = True
+            if board.offset[1] <= pos[1] <= board.offset[1] + len(board.board) * board.cell_size and \
+                    0 <= pos[0] <= len(board.board[0]) * board.cell_size and \
+                    board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#' and tower1:
                 tower = Tower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
                 all_towers.add(tower)
+                board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = '1'
+                tower1 = False
     screen.fill((0, 0, 0))
     board.render()
     all_enemies.draw(screen)
