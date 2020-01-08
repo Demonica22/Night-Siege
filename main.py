@@ -15,8 +15,8 @@ class Board:
     def __init__(self, width, height, board, screen):
         self.cell_size = 30
         self.screen = screen
-        pygame.display.set_mode((width * 30, height * 30 + 60))
         self.offset = (0, 60)
+        pygame.display.set_mode((width * 30, height * 30 + self.offset[1]))
         self.width = width * self.cell_size
         self.height = height * self.cell_size
         self.board = board
@@ -41,7 +41,7 @@ class Board:
 
 def scan_level(level_file_name):
     file = open(level_file_name + ".txt", encoding="utf-8").read().split("\n")
-    file = list(map(list, file))
+    file = list(map(list, file[:-1]))
     return len(file[0]), len(file), file
 
 
@@ -62,7 +62,10 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = event.pos
-            if board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
+            if board.offset[1] <= (pos[1] - board.offset[1]) // 30 < board.offset[1] + len(
+                    board.board) * board.cell_size and \
+                    0 <= (pos[0] - board.offset[0]) // 30 < len(board.board[0]) * board.cell_size and \
+                    board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
                 tower = Tower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
                 all_towers.add(tower)
     screen.fill((0, 0, 0))
