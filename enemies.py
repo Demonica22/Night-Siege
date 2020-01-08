@@ -43,7 +43,7 @@ class Enemy(pygame.sprite.Sprite):
             self.passed_cells.add(((self.rect.y - self.board.offset[1]) // 30, self.rect.x // 30))
 
     def is_killed(self):
-        if self.hp == 0:
+        if self.hp <= 0:
             return True
         return False
 

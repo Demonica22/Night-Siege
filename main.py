@@ -80,6 +80,6 @@ while running:
     all_towers.draw(screen)
     if all([enem.is_killed() for enem in all_enemies]):
         current_wave += 1
-        all_enemies.clear()
+        all_enemies = pygame.sprite.Group()
     pygame.display.flip()
     clock.tick(10)
