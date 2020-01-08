@@ -19,6 +19,7 @@ class Board:
         self.height = height * self.cell_size
         self.board = board
         self.current_money = 13
+        self.current_wave = 1
 
     def render(self):
         for elem in range(len(self.board)):
@@ -44,6 +45,10 @@ class Board:
         textstrong = font.render("10", 1, (100, 255, 100))
         self.screen.blit(textstrong, (67, 40))
         moneytext = font.render(str(self.current_money), 1, (100, 255, 100))
+        # TO MAKE NORMAL
+        wave_text = font.render("current_wave " + str(self.current_wave), 1, (255, 0, 0))
+        self.screen.blit(wave_text, (self.width - 250, 40))
+        # TO MAKE NORMAL
         self.screen.blit(moneytext, (self.width - (COINS.get_width() // 1.2), 40))
 
     def clicked(self, x, y):
