@@ -20,7 +20,7 @@ class Board:
         self.width = width * self.cell_size
         self.height = height * self.cell_size
         self.board = board
-        self.current_money = 5
+        self.current_money = 13
 
     def render(self):
         for elem in range(len(self.board)):
@@ -65,6 +65,7 @@ clock = pygame.time.Clock()
 pygame.display.flip()
 current_wave = 1
 current_time = 0
+tower1 = False
 while running:
     current_time += 0.5
     if len(all_enemies) != current_wave * 5 and current_time % 20 == 0:
@@ -75,7 +76,7 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = event.pos
-            if 0 <= pos[0] <= 40 and 0 <= pos[1] <= 40 and board.current_money >= 5:
+            if 0 <= pos[0] <= 40 and 0 <= pos[1] <= 40 and board.current_money >= 5 and not tower1:
                 board.current_money -= 5
                 tower1 = True
             if board.offset[1] <= pos[1] <= board.offset[1] + len(board.board) * board.cell_size and \
