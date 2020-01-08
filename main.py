@@ -90,11 +90,12 @@ while running:
                     board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
                 if tower1:
                     tower = Tower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
+                    tower1 = False
+                    board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = '1'
                 elif tower2:
                     tower = TowerStrong(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
-                all_towers.add(tower)
-                board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = '1'
-                tower1 = False
+                    tower2 = False
+                    board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = '2'
     screen.fill((0, 0, 0))
     board.render()
     all_enemies.draw(screen)

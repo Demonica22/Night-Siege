@@ -30,3 +30,4 @@ class TowerStrong(Tower):
         self.image = TOWERS
         self.board = board
         self.rect = self.image.get_rect()
+        self.x, self.y = coords
