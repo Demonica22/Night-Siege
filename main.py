@@ -1,7 +1,6 @@
 import pygame
 from enemies import Enemy
-from tower import Tower
-
+from tower import Tower, TowerStrong, TowerLite
 pygame.init()
 
 WALL = pygame.image.load('data/wall.png')
@@ -10,6 +9,7 @@ LEVEL_ENDING = pygame.image.load('data/end.jpg')
 COINS = pygame.image.load('data/coins.png')
 START = pygame.image.load('data/start.jpg')
 TOWER = pygame.image.load('data/BigTower.jpg')
+STOWER = pygame.image.load('data/bigstrongtower.jpg')
 
 
 class Board:
@@ -40,9 +40,12 @@ class Board:
                 pygame.draw.rect(self.screen, (0, 0, 0), (x, y, self.cell_size, self.cell_size), 1)
         self.screen.blit(COINS, (self.width - COINS.get_width(), 0))
         self.screen.blit(TOWER, (0, 0))
+        self.screen.blit(STOWER, (60, 0))
         font = pygame.font.Font(None, 30)
         text = font.render("5", 1, (100, 255, 100))
         screen.blit(text, (15, 40))
+        textstrong = font.render("10", 1, (100, 255, 100))
+        screen.blit(textstrong, (67, 40))
         moneytext = font.render(str(self.current_money), 1, (100, 255, 100))
         screen.blit(moneytext, (self.width - (COINS.get_width() // 1.2), 40))
 
@@ -66,6 +69,7 @@ pygame.display.flip()
 current_wave = 1
 current_time = 0
 tower1 = False
+tower2 = False
 while running:
     current_time += 0.5
     if len(all_enemies) < current_wave * 5 and current_time % 20 == 0:
@@ -75,13 +79,19 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = event.pos
-            if 0 <= pos[0] <= 40 and 0 <= pos[1] <= 40 and board.current_money >= 5 and not tower1:
+            if 0 <= pos[0] <= 40 and 0 <= pos[1] <= 40 and board.current_money >= 5 and not tower1 and not tower2:
                 board.current_money -= 5
                 tower1 = True
+            elif 60 <= pos[0] <= 100 and 0 <= pos[1] <= 40 and board.current_money >= 10 and not tower1 and not tower2:
+                board.current_money -= 10
+                tower2 = True
             if board.offset[1] <= pos[1] <= board.offset[1] + len(board.board) * board.cell_size and \
                     0 <= pos[0] <= len(board.board[0]) * board.cell_size and \
-                    board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#' and tower1:
-                tower = Tower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
+                    board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
+                if tower1:
+                    tower = Tower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
+                elif tower2:
+                    tower = TowerStrong(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
                 all_towers.add(tower)
                 board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = '1'
                 tower1 = False
