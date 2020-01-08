@@ -34,7 +34,7 @@ class Board:
                     self.screen.blit(LEVEL_ENDING, (x, y))
                 elif self.board[elem][cell] == "@":
                     self.screen.blit(START, (x, y))
-                    self.start_pos = (x , y)
+                    self.start_pos = (x, y)
                 pygame.draw.rect(self.screen, (0, 0, 0), (x, y, self.cell_size, self.cell_size), 1)
         self.screen.blit(CHEST, (self.width - CHEST.get_width(), 0))
 
@@ -54,8 +54,6 @@ all_enemies = pygame.sprite.Group()
 enemy = Enemy(all_enemies, board)
 all_enemies.draw(screen)
 all_towers = pygame.sprite.Group()
-tower = Tower(all_towers, board)
-all_towers.draw(screen)
 clock = pygame.time.Clock()
 pygame.display.flip()
 while running:
@@ -64,21 +62,13 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = event.pos
-            a = [pos[0], pos[1]]
-            if a[0] % 30 != 0:
-                a[0] = a[0] // 30 * 30
-            if a[1] % 30 != 0:
-                a[1] = a[1] // 30 * 30
-            if board.board[pos[1] // 30][pos[0] // 30] == '#':
+            if board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
+                tower = Tower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
                 all_towers.add(tower)
-                Tower.clickm(tower, a)
-
-            pygame.display.flip()
-
     screen.fill((0, 0, 0))
     board.render()
     all_enemies.draw(screen)
     all_enemies.update()
     all_towers.draw(screen)
     pygame.display.flip()
-    clock.tick(30)
+    clock.tick(3)
