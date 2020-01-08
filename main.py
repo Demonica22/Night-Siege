@@ -1,5 +1,6 @@
 import pygame
 from enemies import Enemy
+from tower import Tower
 
 pygame.init()
 
@@ -52,15 +53,32 @@ board.render()
 all_enemies = pygame.sprite.Group()
 enemy = Enemy(all_enemies, board)
 all_enemies.draw(screen)
-pygame.display.flip()
+all_towers = pygame.sprite.Group()
+tower = Tower(all_towers, board)
+all_towers.draw(screen)
 clock = pygame.time.Clock()
+pygame.display.flip()
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pos = event.pos
+            a = [pos[0], pos[1]]
+            if a[0] % 30 != 0:
+                a[0] = a[0] // 30 * 30
+            if a[1] % 30 != 0:
+                a[1] = a[1] // 30 * 30
+            if board.board[pos[1] // 30][pos[0] // 30] == '#':
+                all_towers.add(tower)
+                Tower.clickm(tower, a)
+
+            pygame.display.flip()
+
     screen.fill((0, 0, 0))
     board.render()
     all_enemies.draw(screen)
     all_enemies.update()
+    all_towers.draw(screen)
     pygame.display.flip()
     clock.tick(30)
