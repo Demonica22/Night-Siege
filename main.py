@@ -51,12 +51,18 @@ running = True
 screen.fill((0, 0, 0))
 board.render()
 all_enemies = pygame.sprite.Group()
+
 enemy = Enemy(all_enemies, board)
-all_enemies.draw(screen)
 all_towers = pygame.sprite.Group()
 clock = pygame.time.Clock()
 pygame.display.flip()
+current_wave = 1
+current_time = 0
 while running:
+    current_time += 0.5
+    if len(all_enemies) != current_wave * 5 and current_time % 20 == 0:
+        enemy = Enemy(all_enemies, board)
+        all_enemies.add(enemy)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -67,11 +73,13 @@ while running:
                     0 <= pos[0] <= len(board.board[0]) * board.cell_size and \
                     board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
                 tower = Tower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
-                all_towers.add(tower)
     screen.fill((0, 0, 0))
     board.render()
     all_enemies.draw(screen)
     all_enemies.update()
     all_towers.draw(screen)
+    if all([enem.is_killed() for enem in all_enemies]):
+        current_wave += 1
+        all_enemies.clear()
     pygame.display.flip()
-    clock.tick(3)
+    clock.tick(10)
