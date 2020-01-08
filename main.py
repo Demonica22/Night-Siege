@@ -50,6 +50,11 @@ class Board:
         moneytext = font.render(str(self.current_money), 1, (100, 255, 100))
         screen.blit(moneytext, (self.width - (COINS.get_width() // 1.2), 40))
 
+    def clicked(self, x, y):
+        if self.offset[0] <= x <= self.offset[0] + self.width:
+            if self.offset[1] <= y <= self.offset[1] + self.height:
+                return True
+
 
 def scan_level(level_file_name):
     file = open(level_file_name + ".txt", encoding="utf-8").read().split("\n")
@@ -80,14 +85,14 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = event.pos
-            if 0 <= pos[0] <= 40 and 0 <= pos[1] <= 40 and board.current_money >= 5 and not tower1 and not tower2:
-                board.current_money -= 5
-                tower1 = True
-            elif 60 <= pos[0] <= 100 and 0 <= pos[1] <= 40 and board.current_money >= 10 and not tower1 and not tower2:
-                board.current_money -= 10
-                tower2 = True
-            if board.offset[1] <= pos[1] <= board.offset[1] + len(board.board) * board.cell_size and \
-                    0 <= pos[0] <= len(board.board[0]) * board.cell_size and \
+            if not all([tower1, tower2]):
+                if 0 <= pos[0] <= 40 and 0 <= pos[1] <= 40 and board.current_money >= 5:
+                    board.current_money -= 5
+                    tower1 = True
+                elif 60 <= pos[0] <= 100 and 0 <= pos[1] <= 40 and board.current_money >= 10:
+                    board.current_money -= 10
+                    tower2 = True
+            if board.clicked(pos[0], pos[1]) and \
                     board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
                 if tower1:
                     tower = Tower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
@@ -102,10 +107,10 @@ while running:
     all_enemies.draw(screen)
     all_enemies.update()
     all_towers.draw(screen)
-    for enem in all_enemies:
-        if enem.is_killed():
-            all_enemies.remove(enem)
-    if all([enem.is_killed() for enem in all_enemies]):
+    for enemy in all_enemies:
+        if enemy.is_killed():
+            all_enemies.remove(enemy)
+    if all([enemy.is_killed() for enemy in all_enemies]):
         current_wave += 1
         all_enemies = pygame.sprite.Group()
     pygame.display.flip()
