@@ -5,24 +5,28 @@ pygame.init()
 TOWER = pygame.image.load("data/башня.jpg")
 TOWERS = pygame.image.load("data/strongtower.jpg")
 
+
 class Tower(pygame.sprite.Sprite):
-    def __init__(self, group, board):
-        self.image = TOWER
+    def __init__(self, group, board, coords):
         super().__init__(group)
-        self.board = board
+        self.image = TOWER
         self.rect = self.image.get_rect()
+        self.board = board
+        self.x, self.y = coords
+
 
 class TowerLite(Tower):
-    def __init__(self):
+    def __init__(self, group, board, coords):
+        super().__init__(group, board, coords)
         self.image = TOWER
-        super().__init__(group)
         self.board = board
         self.rect = self.image.get_rect()
+        self.x, self.y = coords
 
 
 class TowerStrong(Tower):
-    def __init__(self):
-        image_s = TOWERS
-        super().__init__(group)
+    def __init__(self, group, board, coords):
+        super().__init__(group, board, coords)
+        self.image = TOWERS
         self.board = board
-        self.rect = self.image_s.get_rect()
+        self.rect = self.image.get_rect()

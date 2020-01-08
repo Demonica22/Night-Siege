@@ -49,4 +49,3 @@ class Enemy(pygame.sprite.Sprite):
 
     def get_shoted(self, bullet_power):
         self.hp -= bullet_power
-
