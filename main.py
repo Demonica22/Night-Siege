@@ -11,6 +11,7 @@ COINS = pygame.image.load('data/coins.png')
 START = pygame.image.load('data/start.jpg')
 TOWER = pygame.image.load('data/BigTower.jpg')
 
+
 class Board:
     def __init__(self, width, height, board, screen):
         self.cell_size = 30
@@ -89,6 +90,9 @@ while running:
     all_enemies.draw(screen)
     all_enemies.update()
     all_towers.draw(screen)
+    for enem in all_enemies:
+        if enem.is_killed():
+            all_enemies.remove(enem)
     if all([enem.is_killed() for enem in all_enemies]):
         current_wave += 1
         all_enemies = pygame.sprite.Group()
