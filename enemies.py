@@ -16,7 +16,7 @@ class Enemy(pygame.sprite.Sprite):
         self.hp = 5
 
     def update(self):
-        self.speed = 15
+        self.speed = 30
         if self.rect.x // 30 + 1 < len(self.board.board[0]) and \
                 self.board.board[(self.rect.y - self.board.offset[1]) // 30][self.rect.x // 30 + 1] == "0" and not \
                 ((self.rect.y - self.board.offset[1]) // 30, self.rect.x // 30 + 1) in self.passed_cells:

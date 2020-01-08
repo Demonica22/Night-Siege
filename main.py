@@ -73,7 +73,7 @@ tower1 = False
 tower2 = False
 while running:
     current_time += 0.5
-    if len(all_enemies) < current_wave * 5 and current_time % 20 == 0:
+    if len(all_enemies) < current_wave * 5 and current_time % 12 == 0:
         enemy = Enemy(all_enemies, board)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -109,4 +109,4 @@ while running:
         current_wave += 1
         all_enemies = pygame.sprite.Group()
     pygame.display.flip()
-    clock.tick(5)
+    clock.tick(2)
