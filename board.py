@@ -18,7 +18,7 @@ class Board:
         self.width = width * self.cell_size
         self.height = height * self.cell_size
         self.board = board
-        self.current_money = 13
+        self.current_money = 100
         self.current_wave = 1
 
     def render(self):
@@ -35,7 +35,7 @@ class Board:
                 elif self.board[elem][cell] == "@":
                     self.screen.blit(START, (x, y))
                     self.start_pos = (x, y)
-                pygame.draw.rect(self.screen, (0, 0, 0), (x, y, self.cell_size, self.cell_size), 1)
+                # pygame.draw.rect(self.screen, (0, 0, 0), (x, y, self.cell_size, self.cell_size), 1)
         self.screen.blit(COINS, (self.width - COINS.get_width(), 0))
         self.screen.blit(TOWER, (0, 0))
         self.screen.blit(STOWER, (60, 0))
@@ -55,3 +55,4 @@ class Board:
         if self.offset[0] <= x <= self.offset[0] + self.width:
             if self.offset[1] <= y <= self.offset[1] + self.height:
                 return True
+        return False
