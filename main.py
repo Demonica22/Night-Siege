@@ -35,7 +35,6 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = event.pos
             if event.button == 1:
-
                 if not hand:
                     if 0 <= pos[0] <= 40 and 0 <= pos[1] <= 40 and board.current_money >= 5:
                         board.current_money -= 5
@@ -51,13 +50,19 @@ while running:
                             board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = 'F'
                         elif hand == "ice":
                             tower = IceTower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
-                            board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = '2'
+                            board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = 'I'
                         hand = False
             if event.button == 3:
                 for tower in all_towers.sprites():
                     if tower.clicked(pos[0], pos[1]):
                         print(tower.upgrade())
-
+            if event.button == 2:
+                for tower in all_towers.copy().sprites():
+                    if tower.clicked(pos[0], pos[1]):
+                        tower.sell()
+                        board.board[(tower.rect.y - board.offset[1]) // 30][
+                            (tower.rect.x - board.offset[0]) // 30] = "#"
+                        all_towers.remove(tower)
     screen.fill((71, 45, 23))
     board.render()
     all_enemies.draw(screen)

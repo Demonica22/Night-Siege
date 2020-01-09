@@ -42,6 +42,7 @@ class FireTower(Tower):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = coords
         self.upgrade_cost = [5, 10, 15]  # [level1, level2, level3]
+        self.sell_cost = [5, 15, 30]  # [level1, level2, level3]
 
     def upgrade(self):
         """
@@ -55,6 +56,8 @@ class FireTower(Tower):
                 self.level += 1
                 self.image = self.images[self.level - 1]
                 self.power *= 2
+                self.board.board[(self.rect.y - self.board.offset[1]) // 30][(self.rect.x-self.board.offset[0]) // 30] = \
+                    "F" + str(self.level)
                 return "UPGRADED"
             return "Not enough money"
         return "max level"
@@ -70,6 +73,9 @@ class FireTower(Tower):
             if self.rect.y <= y <= self.rect.y + self.image.get_height():
                 return True
         return False
+
+    def sell(self):
+        self.board.current_money += self.sell_cost[self.level - 1]
 
 
 class IceTower(Tower):
@@ -85,6 +91,7 @@ class IceTower(Tower):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = coords
         self.upgrade_cost = [10, 20, 30]  # [level1, level2, level3]
+        self.sell_cost = [10, 30, 60]  # [level1, level2, level3]
 
     def upgrade(self):
         """
@@ -98,6 +105,8 @@ class IceTower(Tower):
                 self.level += 1
                 self.power *= 2
                 self.image = self.images[self.level - 1]
+                self.board.board[(self.rect.y - self.board.offset[1]) // 30][(self.rect.x-self.board.offset[0]) // 30] = \
+                    "I" + str(self.level)
                 return "UPGRADED"
             return "Not enough money"
         return "max level"
@@ -113,3 +122,6 @@ class IceTower(Tower):
             if self.rect.y <= y <= self.rect.y + self.image.get_height():
                 return True
         return False
+
+    def sell(self):
+        self.board.current_money += self.sell_cost[self.level - 1]
