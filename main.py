@@ -26,8 +26,8 @@ current_time = 0
 enemies_left = board.current_wave * 5
 hand = False
 while running:
-    current_time += 0.5
-    if enemies_left != 0 and current_time % (board.fps // 2) == 0:
+    current_time += 1
+    if enemies_left != 0 and current_time % board.fps == 0:
         enemies_left -= 1
         if board.current_wave <= 5:
             enemy = Zombie(all_enemies, board)
@@ -51,13 +51,20 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = event.pos
             if event.button == 1:
-                if not hand:
-                    if 0 <= pos[0] <= 40 and 0 <= pos[1] <= 40 and board.current_money >= 5:
+                if 0 <= pos[0] <= 40 and 0 <= pos[1] <= 40:
+                    if not hand and board.current_money >= 5:
                         board.current_money -= 5
                         hand = "fire"
-                    elif 60 <= pos[0] <= 100 and 0 <= pos[1] <= 40 and board.current_money >= 10:
+                    elif hand:
+                        board.current_money += 5
+                        hand = False
+                elif 60 <= pos[0] <= 100 and 0 <= pos[1] <= 40:
+                    if not hand and board.current_money >= 10:
                         board.current_money -= 10
                         hand = "ice"
+                    elif hand:
+                        board.current_money += 10
+                        hand = False
                 if board.clicked(pos[0], pos[1]) and \
                         board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
                     if hand:
@@ -85,7 +92,8 @@ while running:
     all_enemies.update()
     all_towers.draw(screen)
     for tower in all_towers.sprites():
-        tower.attack(all_enemies.sprites())
+        if current_time % 15 == 0:
+            tower.attack(all_enemies.sprites())
     for enemy in all_enemies:
         if enemy.is_killed():
             all_enemies.remove(enemy)
