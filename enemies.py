@@ -16,6 +16,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.board.start_pos
         self.passed_cells = set()  # множество из координат клеток, которые монстр уже прошел
+        self.max_hp = 5
         self.hp = 5
         self.speed = 30
         self.moving = False  # двигается ли монстр
@@ -29,6 +30,7 @@ class Enemy(pygame.sprite.Sprite):
         в которой монстр уже был.
         :return: None
         """
+        self.draw_health_bar()
         if not self.moving:
             x = self.rect.x
             y = self.rect.y
@@ -139,6 +141,18 @@ class Enemy(pygame.sprite.Sprite):
             return True
         return False
 
+    def draw_health_bar(self):
+        """
+        Рисует полоску ХП над каждым монстром
+        :return: None
+        """
+        length = self.image.get_width()
+        move_by = length / self.max_hp
+        health_bar = round(move_by * self.hp)
+
+        pygame.draw.rect(self.board.screen, (255, 0, 0), (self.rect.x , self.rect.y - 5, length, 2), 0)
+        pygame.draw.rect(self.board.screen, (0, 255, 0), (self.rect.x , self.rect.y - 5, health_bar, 2), 0)
+
 
 class Zombie(Enemy):
     def __init__(self, group, board):
@@ -149,6 +163,7 @@ class Zombie(Enemy):
         self.rect.x, self.rect.y = self.board.start_pos
         self.passed_cells = set()  # множество из координат клеток, которые монстр уже прошел
         self.hp = 40
+        self.max_hp = 40
         self.speed = 60 // self.board.fps
         self.reward = 1
         self.damage = 1  # Урон по крепости
@@ -163,6 +178,7 @@ class Wizard(Enemy):
         self.rect.x, self.rect.y = self.board.start_pos
         self.passed_cells = set()  # множество из координат клеток, которые монстр уже прошел
         self.hp = 30
+        self.max_hp = 30
         self.speed = 90 // self.board.fps
         self.reward = 5
         self.damage = 2  # Урон по крепости
@@ -177,6 +193,7 @@ class Warrior(Enemy):
         self.rect.x, self.rect.y = self.board.start_pos
         self.passed_cells = set()  # множество из координат клеток, которые монстр уже прошел
         self.hp = 100
+        self.max_hp = 100
         self.speed = 30 // self.board.fps
         self.reward = 15
         self.damage = 3  # Урон по крепости
