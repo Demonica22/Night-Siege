@@ -5,8 +5,8 @@ WALKWAY = pygame.image.load('data/walkway.jpg')
 LEVEL_ENDING = pygame.image.load('data/end.jpg')
 COINS = pygame.image.load('data/coins.png')
 START = pygame.image.load('data/start.jpg')
-TOWER = pygame.image.load('data/BigTower.jpg')
-STOWER = pygame.image.load('data/bigstrongtower.jpg')
+TOWER = pygame.image.load('data/bigtower.png')
+STOWER = pygame.image.load('data/bigtower2.png')
 
 
 class Board:

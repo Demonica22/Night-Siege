@@ -33,7 +33,7 @@ class FireTower(Tower):
     def __init__(self, group, board, coords):
         super().__init__(group, board, coords)
         self.level = 1
-        self.images = [pygame.image.load("data/tower" + str(n) + ".png").convert_alpha() for n in range(1, 4)]
+        self.images = [pygame.image.load("data/firetower" + str(n) + ".png").convert_alpha() for n in range(1, 4)]
         # Список изображений башен по уровням
         self.image = self.images[self.level - 1]
         self.board = board
@@ -82,7 +82,7 @@ class IceTower(Tower):
     def __init__(self, group, board, coords):
         super().__init__(group, board, coords)
         self.level = 1
-        self.images = [pygame.image.load("data/tower" + str(n) + ".png").convert_alpha() for n in range(4, 7)]
+        self.images = [pygame.image.load("data/icetower" + str(n) + ".png").convert_alpha() for n in range(1, 4)]
         # Список изображений башен по уровням
         self.image = self.images[self.level - 1]
         self.range = 3
