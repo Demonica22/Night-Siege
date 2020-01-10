@@ -18,23 +18,24 @@ class Board:
         self.width = width * self.cell_size
         self.height = height * self.cell_size
         self.board = board
-        self.current_money = 100
+        self.current_money = 5
         self.current_wave = 1
+        self.fps = 30
 
     def render(self):
         for elem in range(len(self.board)):
             for cell in range(len(self.board[elem])):
                 x = cell * self.cell_size
                 y = self.offset[1] + elem * self.cell_size
-                if self.board[elem][cell] == "#":
-                    self.screen.blit(WALL, (x, y))
-                elif self.board[elem][cell] == "0":
+                if self.board[elem][cell] == "0":
                     self.screen.blit(WALKWAY, (x, y))
                 elif self.board[elem][cell] == "X":
                     self.screen.blit(LEVEL_ENDING, (x, y))
                 elif self.board[elem][cell] == "@":
                     self.screen.blit(START, (x, y))
                     self.start_pos = (x, y)
+                else:
+                    self.screen.blit(WALL, (x, y))
                 # pygame.draw.rect(self.screen, (0, 0, 0), (x, y, self.cell_size, self.cell_size), 1)
         self.screen.blit(COINS, (self.width - COINS.get_width(), 0))
         self.screen.blit(TOWER, (0, 0))
