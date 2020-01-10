@@ -2,7 +2,7 @@ import pygame
 
 pygame.init()
 
-MONSTER = pygame.image.load("data/monster.jpg")
+MONSTER = pygame.image.load("data/monster2.png")
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -63,6 +63,7 @@ class Enemy(pygame.sprite.Sprite):
         :return: bool
         """
         self.hp -= bullet_power
+        print(self.hp)
         if self.is_killed():
             self.board.current_money += 1
             return True
