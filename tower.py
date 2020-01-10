@@ -38,7 +38,7 @@ class FireTower(Tower):
         self.image = self.images[self.level - 1]
         self.board = board
         self.range = 1
-        self.power = 1
+        self.power = 5
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = coords
         self.upgrade_cost = [5, 10, 15]  # [level1, level2, level3]
@@ -87,7 +87,7 @@ class IceTower(Tower):
         # Список изображений башен по уровням
         self.image = self.images[self.level - 1]
         self.range = 3
-        self.power = 2
+        self.power = 10
         self.board = board
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = coords
