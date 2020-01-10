@@ -21,6 +21,7 @@ class Enemy(pygame.sprite.Sprite):
         self.moving = False  # двигается ли монстр
         self.reward = 1
         self.turned = "right"  # направление взгляда монстра
+        self.damage = 1
 
     def update(self):
         """
@@ -29,31 +30,59 @@ class Enemy(pygame.sprite.Sprite):
         :return: None
         """
         if not self.moving:
-            if self.rect.x // 30 + 1 < len(self.board.board[0]) and \
-                    self.board.board[(self.rect.y - self.board.offset[1]) // 30][self.rect.x // 30 + 1] == "0" and not \
-                    ((self.rect.y - self.board.offset[1]) // 30, self.rect.x // 30 + 1) in self.passed_cells:
+            x = self.rect.x
+            y = self.rect.y
+            if 0 <= x - self.board.cell_size < self.board.width:
+                if (x - self.board.cell_size, y) == self.board.end_pos:
+                    self.board.hp_left -= self.damage
+                    self.hp = 0
+            if 0 <= y + self.board.cell_size < self.board.height:
+                if (x, y + self.board.cell_size) == self.board.end_pos:
+                    self.board.hp_left -= self.damage
+                    self.hp = 0
+            if 0 <= y - self.board.cell_size < self.board.height:
+                if (x, y + self.board.cell_size) == self.board.end_pos:
+                    self.board.hp_left -= self.damage
+                    self.hp = 0
+            if 0 <= x + self.board.cell_size < self.board.width:
+                if (x + self.board.cell_size, y) == self.board.end_pos:
+                    self.board.hp_left -= self.damage
+                    self.hp = 0
+
+            if self.rect.x // self.board.cell_size + 1 < len(self.board.board[0]) and \
+                    self.board.board[(self.rect.y - self.board.offset[1]) // self.board.cell_size][
+                        self.rect.x // 30 + 1] == "0" \
+                    and not ((self.rect.y - self.board.offset[1]) // self.board.cell_size,
+                             self.rect.x // self.board.cell_size + 1) in self.passed_cells:
                 self.moving = "right"
                 self.rect.x += self.speed
-            elif (self.rect.y - self.board.offset[1]) // 30 + 1 < len(self.board.board) and \
-                    self.board.board[(self.rect.y - self.board.offset[1]) // 30 + 1][self.rect.x // 30] == "0" and not \
-                    ((self.rect.y - self.board.offset[1]) // 30 + 1, self.rect.x // 30) in self.passed_cells:
+            elif (self.rect.y - self.board.offset[1]) // self.board.cell_size + 1 < len(self.board.board) and \
+                    self.board.board[(self.rect.y - self.board.offset[1]) // self.board.cell_size + 1][
+                        self.rect.x // self.board.cell_size] == "0" and not \
+                    ((self.rect.y - self.board.offset[1]) // self.board.cell_size + 1,
+                     self.rect.x // self.board.cell_size) in self.passed_cells:
                 self.moving = 'down'
                 self.rect.y += self.speed
-            elif 0 < self.rect.x // 30 - 1 and self.board.board[(self.rect.y - self.board.offset[1]) // 30][
-                self.rect.x // 30 - 1] == "0" and not \
-                    (((self.rect.y - self.board.offset[1]) // 30), self.rect.x // 30 - 1) in self.passed_cells:
+            elif 0 < self.rect.x // self.board.cell_size - 1 and \
+                    self.board.board[(self.rect.y - self.board.offset[1]) // self.board.cell_size][
+                        self.rect.x // self.board.cell_size - 1] == "0" and not \
+                    (((self.rect.y - self.board.offset[1]) // self.board.cell_size),
+                     self.rect.x // self.board.cell_size - 1) in self.passed_cells:
                 self.rect.move(-self.speed, 0)
                 self.moving = "left"
                 self.rect.x -= self.speed
-            elif 0 < (self.rect.y - self.board.offset[1]) // 30 - 1 and \
-                    self.board.board[(self.rect.y - self.board.offset[1]) // 30 - 1][self.rect.x // 30] == "0" and not \
-                    ((self.rect.y - self.board.offset[1]) // 30 - 1, self.rect.x // 30) in self.passed_cells:
+            elif 0 < (self.rect.y - self.board.offset[1]) // self.board.cell_size - 1 and \
+                    self.board.board[(self.rect.y - self.board.offset[1]) // self.board.cell_size - 1][
+                        self.rect.x // self.board.cell_size] == "0" and not \
+                    ((self.rect.y - self.board.offset[1]) // self.board.cell_size - 1,
+                     self.rect.x // self.board.cell_size) in self.passed_cells:
                 self.moving = "up"
                 self.rect.y -= self.speed
         else:
-            self.passed_cells.add(((self.rect.y - self.board.offset[1]) // 30, self.rect.x // 30))
+            self.passed_cells.add(
+                ((self.rect.y - self.board.offset[1]) // self.board.cell_size, self.rect.x // self.board.cell_size))
             if self.moving == "right":
-                if self.rect.x % 30 != 0 or self.rect.x == 0:
+                if self.rect.x % self.board.cell_size != 0 or self.rect.x == 0:
                     if self.turned != "right":
                         self.turned = "right"
                         self.image = pygame.transform.flip(self.image, True, False)
@@ -65,7 +94,7 @@ class Enemy(pygame.sprite.Sprite):
                 if self.turned != "left":
                     self.turned = "left"
                     self.image = pygame.transform.flip(self.image, True, False)
-                if self.rect.x % 30 != 0 or self.rect.x == 0:
+                if self.rect.x % self.board.cell_size != 0 or self.rect.x == 0:
                     self.rect.move(-self.speed, 0)
                     self.rect.x -= self.speed
                 else:
@@ -74,7 +103,7 @@ class Enemy(pygame.sprite.Sprite):
                 if self.turned != "right":
                     self.turned = "right"
                     self.image = pygame.transform.flip(self.image, True, False)
-                if self.rect.y % 30 != 0 or self.rect.y == 0:
+                if self.rect.y % self.board.cell_size != 0 or self.rect.y == 0:
                     self.rect.move(0, - self.speed)
                     self.rect.y -= self.speed
                 else:
@@ -83,7 +112,7 @@ class Enemy(pygame.sprite.Sprite):
                 if self.turned != "left":
                     self.turned = "left"
                     self.image = pygame.transform.flip(self.image, True, False)
-                if self.rect.y % 30 != 0 or self.rect.y == 0:
+                if self.rect.y % self.board.cell_size != 0 or self.rect.y == 0:
                     self.rect.move(0, self.speed)
                     self.rect.y += self.speed
                 else:
@@ -122,6 +151,7 @@ class Zombie(Enemy):
         self.hp = 40
         self.speed = 60 // self.board.fps
         self.reward = 1
+        self.damage = 1  # Урон по крепости
 
 
 class Wizard(Enemy):
@@ -135,6 +165,7 @@ class Wizard(Enemy):
         self.hp = 30
         self.speed = 90 // self.board.fps
         self.reward = 5
+        self.damage = 2  # Урон по крепости
 
 
 class Warrior(Enemy):
@@ -148,3 +179,4 @@ class Warrior(Enemy):
         self.hp = 100
         self.speed = 30 // self.board.fps
         self.reward = 15
+        self.damage = 3  # Урон по крепости
