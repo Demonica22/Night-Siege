@@ -1,7 +1,8 @@
 import pygame
-from enemies import Enemy
+from enemies import Zombie, Wizard, Warrior
 from tower import Tower, IceTower, FireTower
 from board import Board
+import random
 
 pygame.init()
 
@@ -26,9 +27,24 @@ enemies_left = board.current_wave * 5
 hand = False
 while running:
     current_time += 0.5
-    if enemies_left != 0 and current_time % 6 == 0:
+    if enemies_left != 0 and current_time % (board.fps // 2) == 0:
         enemies_left -= 1
-        enemy = Enemy(all_enemies, board)
+        if board.current_wave <= 5:
+            enemy = Zombie(all_enemies, board)
+        elif 3 < board.current_wave <= 10:
+            enemy = random.choice([1, 2])
+            if enemy == 1:
+                enemy = Zombie(all_enemies, board)
+            else:
+                enemy = Wizard(all_enemies, board)
+        else:
+            enemy = random.choice([1, 2, 3])
+            if enemy == 1:
+                enemy = Zombie(all_enemies, board)
+            elif enemy == 2:
+                enemy = Wizard(all_enemies, board)
+            else:
+                enemy = Warrior(all_enemies, board)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -78,4 +94,4 @@ while running:
         enemies_left = board.current_wave * 5
         all_enemies = pygame.sprite.Group()
     pygame.display.flip()
-    clock.tick(2)
+    clock.tick(board.fps)
