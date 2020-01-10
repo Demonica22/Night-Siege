@@ -56,7 +56,8 @@ class FireTower(Tower):
                 self.level += 1
                 self.image = self.images[self.level - 1]
                 self.power *= 2
-                self.board.board[(self.rect.y - self.board.offset[1]) // 30][(self.rect.x-self.board.offset[0]) // 30] = \
+                self.board.board[(self.rect.y - self.board.offset[1]) // 30][
+                    (self.rect.x - self.board.offset[0]) // 30] = \
                     "F" + str(self.level)
                 return "UPGRADED"
             return "Not enough money"
@@ -105,7 +106,8 @@ class IceTower(Tower):
                 self.level += 1
                 self.power *= 2
                 self.image = self.images[self.level - 1]
-                self.board.board[(self.rect.y - self.board.offset[1]) // 30][(self.rect.x-self.board.offset[0]) // 30] = \
+                self.board.board[(self.rect.y - self.board.offset[1]) // 30][
+                    (self.rect.x - self.board.offset[0]) // 30] = \
                     "I" + str(self.level)
                 return "UPGRADED"
             return "Not enough money"
