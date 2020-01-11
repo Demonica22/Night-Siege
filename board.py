@@ -24,6 +24,7 @@ class Board:
         self.current_wave = 1
         self.hp_left = 100
         self.fps = 30
+        self.enemy_rate = 1  # кол-во монстров в секунду
 
     def render(self):
         for elem in range(len(self.board)):

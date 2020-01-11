@@ -31,11 +31,12 @@ play = True
 showing_range_tower = False
 while running:
     current_time += 1
-    if enemies_left != 0 and current_time % board.fps == 0:
+    if enemies_left != 0 and current_time % (board.fps // board.enemy_rate) == 0:
         enemies_left -= 1
         if board.current_wave <= 5:
             enemy = Zombie(all_enemies, board)
         elif 3 < board.current_wave <= 10:
+            board.enemy_rate = 2
             enemy = random.choice([1, 2])
             if enemy == 1:
                 enemy = Zombie(all_enemies, board)
@@ -44,6 +45,7 @@ while running:
             enemy.hp *= 3
             enemy.max_hp *= 3
         else:
+            board.enemy_rate = 3
             enemy = random.choice([1, 2, 3])
             if enemy == 1:
                 enemy = Zombie(all_enemies, board)
