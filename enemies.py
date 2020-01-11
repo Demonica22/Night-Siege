@@ -19,6 +19,7 @@ class Enemy(pygame.sprite.Sprite):
         self.max_hp = 5
         self.hp = 5
         self.speed = 30
+        self.slowed = False  # замедлен ли монстр
         self.moving = False  # двигается ли монстр
         self.reward = 1
         self.turned = "right"  # направление взгляда монстра
@@ -151,6 +152,7 @@ class Enemy(pygame.sprite.Sprite):
 
         pygame.draw.rect(self.board.screen, (255, 0, 0), (self.rect.x, self.rect.y - 5, length, 2), 0)
         pygame.draw.rect(self.board.screen, (0, 255, 0), (self.rect.x, self.rect.y - 5, health_bar, 2), 0)
+
 
 class Zombie(Enemy):
     def __init__(self, group, board):
