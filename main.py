@@ -28,6 +28,7 @@ current_time = 0
 enemies_left = board.current_wave * 5
 hand = False
 play = True
+showing_range_tower = False
 while running:
     current_time += 1
     if enemies_left != 0 and current_time % board.fps == 0:
@@ -54,6 +55,8 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = event.pos
             if event.button == 1:
+                if showing_range_tower:
+                    showing_range_tower.is_clicked = False
                 if 0 <= pos[0] <= 40 and 0 <= pos[1] <= 40:
                     if not hand and board.current_money >= 5:
                         board.current_money -= 5
@@ -69,7 +72,7 @@ while running:
                         board.current_money += 10
                         hand = False
                 elif 120 <= pos[0] <= 160 and 0 <= pos[1] <= 40:
-                    if not hand and board.current_money >= 10:
+                    if not hand and board.current_money >= 20:
                         board.current_money -= 20
                         hand = "plant"
                     elif hand:
@@ -83,19 +86,27 @@ while running:
                         play = True
                         pygame.mixer.music.unpause()
 
-                if board.clicked(pos[0], pos[1]) and \
-                        board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
-                    if hand:
-                        if hand == "fire":
-                            tower = FireTower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
-                            board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = 'F'
-                        elif hand == "ice":
-                            tower = IceTower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
-                            board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = 'I'
-                        elif hand == "plant":
-                            tower = PlantTower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
-                            board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = 'P'
-                        hand = False
+                if board.clicked(pos[0], pos[1]):
+                    if not hand:
+                        for tower in all_towers.sprites():
+                            if tower.clicked(pos[0], pos[1]):
+                                showing_range_tower = tower
+                                showing_range_tower.is_clicked = True
+                    if board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
+                        if hand:
+                            if hand == "fire":
+                                tower = FireTower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
+                                board.board[(pos[1] - board.offset[1]) // 30][
+                                    (pos[0] - board.offset[0]) // 30] = 'F'
+                            elif hand == "ice":
+                                tower = IceTower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
+                                board.board[(pos[1] - board.offset[1]) // 30][
+                                    (pos[0] - board.offset[0]) // 30] = 'I'
+                            elif hand == "plant":
+                                tower = PlantTower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
+                                board.board[(pos[1] - board.offset[1]) // 30][
+                                    (pos[0] - board.offset[0]) // 30] = 'P'
+                            hand = False
             if event.button == 3:
                 for tower in all_towers.sprites():
                     if tower.clicked(pos[0], pos[1]):
@@ -112,6 +123,8 @@ while running:
     all_enemies.draw(screen)
     all_enemies.update()
     all_towers.draw(screen)
+    if showing_range_tower:
+        showing_range_tower.draw_range()
     for tower in all_towers.sprites():
         if current_time % 15 == 0:
             tower.attack(all_enemies.sprites())

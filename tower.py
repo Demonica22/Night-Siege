@@ -9,6 +9,7 @@ class Tower(pygame.sprite.Sprite):
         self.board = board
         self.range = 1  # дальность атаки башни
         self.power = 1
+        self.is_clicked = False
 
     def clicked(self, x, y):
         if x <= self.x + self.image.get_width() and self.x >= x:
@@ -27,6 +28,20 @@ class Tower(pygame.sprite.Sprite):
                         enemies.remove(target)
                 else:
                     enemies.remove(target)
+
+    def draw_range(self):
+        if self.is_clicked:
+            if self.rect.y - (self.board.cell_size * self.range) >= self.board.offset[1]:
+                pygame.draw.rect(self.board.screen, (255, 0, 0, 0.4),
+                                 pygame.Rect((self.rect.x - (self.board.cell_size * self.range),
+                                              self.rect.y - (self.board.cell_size * self.range)),
+                                             (self.board.cell_size * (self.range * 2 + 1),
+                                              self.board.cell_size * (self.range * 2 + 1))), 1)
+            else:
+                pygame.draw.rect(self.board.screen, (255, 0, 0, 0.4),
+                                 pygame.Rect((self.rect.x - (self.board.cell_size * self.range), self.board.offset[1]),
+                                             (self.board.cell_size * (self.range * 2 + 1),
+                                              self.board.cell_size * (self.range + 1))), 1)
 
 
 class FireTower(Tower):
@@ -86,14 +101,13 @@ class IceTower(Tower):
         self.images = [pygame.image.load("data/icetower" + str(n) + ".png").convert_alpha() for n in range(1, 4)]
         # Список изображений башен по уровням
         self.image = self.images[self.level - 1]
-        self.range = 3
-        self.power = 10
+        self.range = 4
+        self.power = 2
         self.board = board
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = coords
         self.upgrade_cost = [10, 20, 30]  # [level1, level2, level3]
         self.sell_cost = [10, 30, 60]  # [level1, level2, level3]
-
     def upgrade(self):
         """
         Функция првоеряет, может ли быть башня улучшена, если может то улучшает и изменяет board.current_money,
@@ -128,6 +142,7 @@ class IceTower(Tower):
     def sell(self):
         self.board.current_money += self.sell_cost[self.level - 1]
 
+
 class PlantTower(Tower):
     def __init__(self, group, board, coords):
         super().__init__(group, board, coords)
@@ -135,7 +150,7 @@ class PlantTower(Tower):
         self.images = [pygame.image.load("data/planttower" + str(n) + ".png").convert_alpha() for n in range(1, 4)]
         # Список изображений башен по уровням
         self.image = self.images[self.level - 1]
-        self.range = 4
+        self.range = 1
         self.power = 15
         self.board = board
         self.rect = self.image.get_rect()
