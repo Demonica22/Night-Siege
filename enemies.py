@@ -30,7 +30,6 @@ class Enemy(pygame.sprite.Sprite):
         в которой монстр уже был.
         :return: None
         """
-        self.draw_allhealth_bar()
         self.draw_health_bar()
         if not self.moving:
             x = self.rect.x
@@ -51,7 +50,6 @@ class Enemy(pygame.sprite.Sprite):
                 if (x + self.board.cell_size, y) == self.board.end_pos:
                     self.board.hp_left -= self.damage
                     self.hp = 0
-            self.draw_allhealth_bar()
             if self.rect.x // self.board.cell_size + 1 < len(self.board.board[0]) and \
                     self.board.board[(self.rect.y - self.board.offset[1]) // self.board.cell_size][
                         self.rect.x // 30 + 1] == "0" \
@@ -153,17 +151,6 @@ class Enemy(pygame.sprite.Sprite):
 
         pygame.draw.rect(self.board.screen, (255, 0, 0), (self.rect.x, self.rect.y - 5, length, 2), 0)
         pygame.draw.rect(self.board.screen, (0, 255, 0), (self.rect.x, self.rect.y - 5, health_bar, 2), 0)
-
-    def draw_allhealth_bar(self):
-        """
-        Рисует полоску ХП над каждым монстром
-        :return: None
-        """
-        length = 65
-        move_by = length / 100
-        health_bar = round(move_by * 100) # НУЖНО СДЕЛАТЬ НОРМАЛЬНУЮ РАБОТУ С hp_left, подключение к классу добавить
-        pygame.draw.rect(self.board.screen, (255, 0, 0), (200, 20, length, 5), 0)
-        pygame.draw.rect(self.board.screen, (0, 255, 0), (200, 20, health_bar, 5), 0)
 
 class Zombie(Enemy):
     def __init__(self, group, board):

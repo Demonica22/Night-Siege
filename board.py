@@ -10,6 +10,7 @@ STOWER = pygame.image.load('data/bigtower2.png')
 TOOSTOWER = pygame.image.load('data/bigtower3.png')
 SOUNDICON = pygame.image.load('data/sound.png')
 
+
 class Board:
     def __init__(self, width, height, board, screen):
         self.cell_size = 30
@@ -20,7 +21,7 @@ class Board:
         self.height = height * self.cell_size
         self.board = board
         self.current_money = 10
-        self.current_wave = 1
+        self.current_wave = 6
         self.hp_left = 100
         self.fps = 30
 
@@ -61,9 +62,22 @@ class Board:
         # СДЕЛАТЬ НОРМАЛЬНО
         hp_text = font.render("HP " + str(self.hp_left), 1, (100, 255, 100))
         self.screen.blit(hp_text, (self.width - 400, 40))
+        self.draw_health_bar()
 
     def clicked(self, x, y):
         if self.offset[0] <= x <= self.offset[0] + self.width:
             if self.offset[1] <= y <= self.offset[1] + self.height:
                 return True
         return False
+
+    def draw_health_bar(self):
+        """
+        Рисует полоску ХП Игрока
+        :return: None
+        """
+        length = 65
+        move_by = length / 100
+        health_bar = round(
+            move_by * self.hp_left)  # НУЖНО СДЕЛАТЬ НОРМАЛЬНУЮ РАБОТУ С hp_left, подключение к классу добавить
+        pygame.draw.rect(self.screen, (255, 0, 0), (200, 20, length, 5), 0)
+        pygame.draw.rect(self.screen, (0, 255, 0), (200, 20, health_bar, 5), 0)
