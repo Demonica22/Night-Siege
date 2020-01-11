@@ -162,8 +162,8 @@ class Zombie(Enemy):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = self.board.start_pos
         self.passed_cells = set()  # множество из координат клеток, которые монстр уже прошел
-        self.hp = 50
-        self.max_hp = 50
+        self.hp = 40
+        self.max_hp = self.hp
         self.speed = 60 // self.board.fps
         self.reward = 1
         self.damage = 1  # Урон по крепости
@@ -178,7 +178,7 @@ class Wizard(Enemy):
         self.rect.x, self.rect.y = self.board.start_pos
         self.passed_cells = set()  # множество из координат клеток, которые монстр уже прошел
         self.hp = 50
-        self.max_hp = 50
+        self.max_hp = self.hp
         self.speed = 90 // self.board.fps
         self.reward = 1
         self.damage = 2  # Урон по крепости
@@ -193,7 +193,7 @@ class Warrior(Enemy):
         self.rect.x, self.rect.y = self.board.start_pos
         self.passed_cells = set()  # множество из координат клеток, которые монстр уже прошел
         self.hp = 150
-        self.max_hp = 150
+        self.max_hp = self.hp
         self.speed = 30 // self.board.fps
         self.reward = 15
         self.damage = 5  # Урон по крепости

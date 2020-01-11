@@ -29,12 +29,14 @@ enemies_left = board.current_wave * 5
 hand = False
 play = True
 showing_range_tower = False
+enemies_delta_hp = 0
 while running:
     current_time += 1
     if enemies_left != 0 and current_time % (board.fps // board.enemy_rate) == 0:
         enemies_left -= 1
         if board.current_wave <= 5:
             enemy = Zombie(all_enemies, board)
+            enemy.hp += enemies_delta_hp
         elif 3 < board.current_wave <= 10:
             board.enemy_rate = 2
             enemy = random.choice([1, 2])
@@ -42,8 +44,8 @@ while running:
                 enemy = Zombie(all_enemies, board)
             else:
                 enemy = Wizard(all_enemies, board)
+            enemy.hp += enemies_delta_hp
             enemy.hp *= 3
-            enemy.max_hp *= 3
         else:
             board.enemy_rate = 3
             enemy = random.choice([1, 2, 3])
@@ -53,11 +55,10 @@ while running:
                 enemy = Wizard(all_enemies, board)
             else:
                 enemy = Warrior(all_enemies, board)
+            enemy.hp += enemies_delta_hp
             enemy.hp *= 5
-            enemy.max_hp *= 5
         if board.current_wave >= 20:
             enemy.hp *= 10
-            enemy.max_hp *= 10
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -142,7 +143,10 @@ while running:
             all_enemies.remove(enemy)
     if enemies_left == 0 and not all_enemies.sprites():
         board.current_wave += 1
+        enemies_delta_hp += 5
         enemies_left = board.current_wave * 5
         all_enemies = pygame.sprite.Group()
+    if board.hp_left <= 0:
+        running = False
     pygame.display.flip()
     clock.tick(board.fps)
