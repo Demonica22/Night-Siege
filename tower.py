@@ -60,7 +60,7 @@ class FireTower(Tower):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = coords
         self.upgrade_cost = [5, 30, 50]  # [level1, level2, level3]
-        self.sell_cost = [5, 30, 50]  # [level1, level2, level3]
+        self.sell_cost = [4, 30, 50]  # [level1, level2, level3]
 
     def upgrade(self):
         """
@@ -110,7 +110,7 @@ class IceTower(Tower):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = coords
         self.upgrade_cost = [10, 50, 150]  # [level1, level2, level3]
-        self.sell_cost = [10, 50, 200]  # [level1, level2, level3]
+        self.sell_cost = [9, 50, 200]  # [level1, level2, level3]
 
     def upgrade(self):
         """
@@ -183,7 +183,7 @@ class PlantTower(Tower):
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = coords
         self.upgrade_cost = [20, 100, 200]  # [level1, level2, level3]
-        self.sell_cost = [20, 100, 300]  # [level1, level2, level3]
+        self.sell_cost = [19, 100, 300]  # [level1, level2, level3]
 
     def attack(self, enemies):
         if enemies:
