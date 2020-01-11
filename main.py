@@ -120,9 +120,9 @@ while running:
                         all_towers.remove(tower)
     screen.fill((71, 45, 23))
     board.render()
+    all_towers.draw(screen)
     all_enemies.draw(screen)
     all_enemies.update()
-    all_towers.draw(screen)
     if showing_range_tower:
         showing_range_tower.draw_range()
     for tower in all_towers.sprites():

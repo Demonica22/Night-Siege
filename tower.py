@@ -24,24 +24,27 @@ class Tower(pygame.sprite.Sprite):
                         self.range * self.board.cell_size and \
                         self.rect.y - self.range * self.board.cell_size <= target.rect.y <= self.rect.y + \
                         self.range * self.board.cell_size:
+                    pygame.draw.line(self.board.screen, (180, 0, 0),
+                                     (self.rect.x + self.board.cell_size // 2, self.rect.y + self.board.cell_size // 4),
+                                     (target.rect.x + self.board.cell_size // 2,
+                                      target.rect.y + self.board.cell_size // 2),2)
                     if target.get_shoted(self.power):
                         enemies.remove(target)
+                    break
                 else:
                     enemies.remove(target)
 
     def draw_range(self):
         if self.is_clicked:
-            if self.rect.y - (self.board.cell_size * self.range) >= self.board.offset[1]:
-                pygame.draw.rect(self.board.screen, (255, 0, 0, 0.4),
-                                 pygame.Rect((self.rect.x - (self.board.cell_size * self.range),
-                                              self.rect.y - (self.board.cell_size * self.range)),
-                                             (self.board.cell_size * (self.range * 2 + 1),
-                                              self.board.cell_size * (self.range * 2 + 1))), 1)
+            if self.board.offset[1] > self.rect.y - (self.board.cell_size * self.range):
+                delta = self.board.offset[1] - self.rect.y - (self.board.cell_size * self.range)
             else:
-                pygame.draw.rect(self.board.screen, (255, 0, 0, 0.4),
-                                 pygame.Rect((self.rect.x - (self.board.cell_size * self.range), self.board.offset[1]),
-                                             (self.board.cell_size * (self.range * 2 + 1),
-                                              self.board.cell_size * (self.range + 1))), 1)
+                delta = 0
+            pygame.draw.rect(self.board.screen, (255, 0, 0, 0.4),
+                             pygame.Rect((self.rect.x - (self.board.cell_size * self.range),
+                                          self.rect.y - (self.board.cell_size * self.range) - delta),
+                                         (self.board.cell_size * (self.range * 2 + 1),
+                                          self.board.cell_size * (self.range * 2 + 1) - abs(delta))), 1)
 
 
 class FireTower(Tower):
@@ -101,13 +104,14 @@ class IceTower(Tower):
         self.images = [pygame.image.load("data/icetower" + str(n) + ".png").convert_alpha() for n in range(1, 4)]
         # Список изображений башен по уровням
         self.image = self.images[self.level - 1]
-        self.range = 4
+        self.range = 2
         self.power = 2
         self.board = board
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = coords
         self.upgrade_cost = [10, 20, 30]  # [level1, level2, level3]
         self.sell_cost = [10, 30, 60]  # [level1, level2, level3]
+
     def upgrade(self):
         """
         Функция првоеряет, может ли быть башня улучшена, если может то улучшает и изменяет board.current_money,
@@ -118,7 +122,7 @@ class IceTower(Tower):
             if self.board.current_money >= self.upgrade_cost[self.level]:
                 self.board.current_money -= self.upgrade_cost[self.level]
                 self.level += 1
-                self.power *= 2
+                self.range += 1
                 self.image = self.images[self.level - 1]
                 self.board.board[(self.rect.y - self.board.offset[1]) // 30][
                     (self.rect.x - self.board.offset[0]) // 30] = \
@@ -126,6 +130,26 @@ class IceTower(Tower):
                 return "UPGRADED"
             return "Not enough money"
         return "max level"
+
+    def attack(self, enemies):
+        if enemies:
+            for target in enemies.copy():
+                if self.rect.x - self.range * self.board.cell_size <= target.rect.x <= self.rect.x + \
+                        self.range * self.board.cell_size and \
+                        self.rect.y - self.range * self.board.cell_size <= target.rect.y <= self.rect.y + \
+                        self.range * self.board.cell_size:
+                    pygame.draw.line(self.board.screen, (0, 0, 200),
+                                     (self.rect.x + self.board.cell_size // 2, self.rect.y + self.board.cell_size // 4),
+                                     (target.rect.x + self.board.cell_size // 2,
+                                      target.rect.y + self.board.cell_size // 2), 2)
+                    if not target.slowed:
+                        target.slowed = True
+                        target.speed //= 2
+                    if target.get_shoted(self.power):
+                        enemies.remove(target)
+                    break
+                else:
+                    enemies.remove(target)
 
     def clicked(self, x, y):
         """
@@ -158,6 +182,22 @@ class PlantTower(Tower):
         self.upgrade_cost = [10, 20, 30]  # [level1, level2, level3]
         self.sell_cost = [10, 30, 60]  # [level1, level2, level3]
 
+    def attack(self, enemies):
+        if enemies:
+            for target in enemies.copy():
+                if self.rect.x - self.range * self.board.cell_size <= target.rect.x <= self.rect.x + \
+                        self.range * self.board.cell_size and \
+                        self.rect.y - self.range * self.board.cell_size <= target.rect.y <= self.rect.y + \
+                        self.range * self.board.cell_size:
+                    pygame.draw.line(self.board.screen, (0, 200, 0),
+                                     (self.rect.x + self.board.cell_size // 2, self.rect.y + self.board.cell_size // 4),
+                                     (target.rect.x + self.board.cell_size // 2,
+                                      target.rect.y + self.board.cell_size // 2), 2)
+                    if target.get_shoted(self.power):
+                        enemies.remove(target)
+                else:
+                    enemies.remove(target)
+
     def upgrade(self):
         """
         Функция првоеряет, может ли быть башня улучшена, если может то улучшает и изменяет board.current_money,
@@ -168,7 +208,7 @@ class PlantTower(Tower):
             if self.board.current_money >= self.upgrade_cost[self.level]:
                 self.board.current_money -= self.upgrade_cost[self.level]
                 self.level += 1
-                self.power *= 2
+                self.range += 1
                 self.image = self.images[self.level - 1]
                 self.board.board[(self.rect.y - self.board.offset[1]) // 30][
                     (self.rect.x - self.board.offset[0]) // 30] = \
