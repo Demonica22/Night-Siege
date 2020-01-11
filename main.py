@@ -41,6 +41,8 @@ while running:
                 enemy = Zombie(all_enemies, board)
             else:
                 enemy = Wizard(all_enemies, board)
+            enemy.hp *= 3
+            enemy.max_hp *= 3
         else:
             enemy = random.choice([1, 2, 3])
             if enemy == 1:
@@ -49,6 +51,11 @@ while running:
                 enemy = Wizard(all_enemies, board)
             else:
                 enemy = Warrior(all_enemies, board)
+            enemy.hp *= 5
+            enemy.max_hp *= 5
+        if board.current_wave >= 20:
+            enemy.hp *= 10
+            enemy.max_hp *= 10
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -61,21 +68,21 @@ while running:
                     if not hand and board.current_money >= 5:
                         board.current_money -= 5
                         hand = "fire"
-                    elif hand:
+                    elif hand == "fire":
                         board.current_money += 5
                         hand = False
                 elif 60 <= pos[0] <= 100 and 0 <= pos[1] <= 40:
                     if not hand and board.current_money >= 10:
                         board.current_money -= 10
                         hand = "ice"
-                    elif hand:
+                    elif hand == "ice":
                         board.current_money += 10
                         hand = False
                 elif 120 <= pos[0] <= 160 and 0 <= pos[1] <= 40:
                     if not hand and board.current_money >= 20:
                         board.current_money -= 20
                         hand = "plant"
-                    elif hand:
+                    elif hand == "plant":
                         board.current_money += 20
                         hand = False
                 elif 480 <= pos[0] <= 538 and 0 <= pos[1] <= 60:
