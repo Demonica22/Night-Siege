@@ -21,7 +21,7 @@ class Board:
         self.height = height * self.cell_size
         self.board = board
         self.current_money = 10
-        self.current_wave = 6
+        self.current_wave = 1
         self.hp_left = 100
         self.fps = 30
 
