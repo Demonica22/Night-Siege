@@ -1,6 +1,6 @@
 import pygame
 from enemies import Zombie, Wizard, Warrior
-from tower import Tower, IceTower, FireTower
+from tower import Tower, IceTower, FireTower, PlantTower
 from board import Board
 import random
 
@@ -15,6 +15,8 @@ def scan_level(level_file_name):
 
 screen = pygame.display.set_mode((600, 600))
 board = Board(*scan_level("new_level"), screen)
+pygame.mixer.music.load('sounds\soundtrack.mp3')
+pygame.mixer.music.play(-1)
 running = True
 screen.fill((71, 45, 23))
 board.render()
@@ -25,6 +27,7 @@ pygame.display.flip()
 current_time = 0
 enemies_left = board.current_wave * 5
 hand = False
+play = True
 while running:
     current_time += 1
     if enemies_left != 0 and current_time % board.fps == 0:
@@ -65,6 +68,21 @@ while running:
                     elif hand:
                         board.current_money += 10
                         hand = False
+                elif 120 <= pos[0] <= 160 and 0 <= pos[1] <= 40:
+                    if not hand and board.current_money >= 10:
+                        board.current_money -= 20
+                        hand = "plant"
+                    elif hand:
+                        board.current_money += 20
+                        hand = False
+                elif 480 <= pos[0] <= 538 and 0 <= pos[1] <= 60:
+                    if play:
+                        pygame.mixer.music.pause()
+                        play = False
+                    else:
+                        play = True
+                        pygame.mixer.music.unpause()
+
                 if board.clicked(pos[0], pos[1]) and \
                         board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] == '#':
                     if hand:
@@ -74,6 +92,9 @@ while running:
                         elif hand == "ice":
                             tower = IceTower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
                             board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = 'I'
+                        elif hand == "plant":
+                            tower = PlantTower(all_towers, board, (pos[0] // 30 * 30, pos[1] // 30 * 30))
+                            board.board[(pos[1] - board.offset[1]) // 30][(pos[0] - board.offset[0]) // 30] = 'P'
                         hand = False
             if event.button == 3:
                 for tower in all_towers.sprites():
