@@ -27,7 +27,7 @@ class Tower(pygame.sprite.Sprite):
                     pygame.draw.line(self.board.screen, (180, 0, 0),
                                      (self.rect.x + self.board.cell_size // 2, self.rect.y + self.board.cell_size // 4),
                                      (target.rect.x + self.board.cell_size // 2,
-                                      target.rect.y + self.board.cell_size // 2),2)
+                                      target.rect.y + self.board.cell_size // 2), 2)
                     if target.get_shoted(self.power):
                         enemies.remove(target)
                     break
@@ -37,12 +37,12 @@ class Tower(pygame.sprite.Sprite):
     def draw_range(self):
         if self.is_clicked:
             if self.board.offset[1] > self.rect.y - (self.board.cell_size * self.range):
-                delta = self.board.offset[1] - self.rect.y - (self.board.cell_size * self.range)
+                delta = self.board.offset[1] - (self.rect.y - (self.board.cell_size * self.range))
             else:
                 delta = 0
             pygame.draw.rect(self.board.screen, (255, 0, 0, 0.4),
                              pygame.Rect((self.rect.x - (self.board.cell_size * self.range),
-                                          self.rect.y - (self.board.cell_size * self.range) - delta),
+                                          self.rect.y - (self.board.cell_size * self.range) + abs(delta)),
                                          (self.board.cell_size * (self.range * 2 + 1),
                                           self.board.cell_size * (self.range * 2 + 1) - abs(delta))), 1)
 
@@ -59,8 +59,8 @@ class FireTower(Tower):
         self.power = 5
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = coords
-        self.upgrade_cost = [5, 10, 15]  # [level1, level2, level3]
-        self.sell_cost = [5, 15, 30]  # [level1, level2, level3]
+        self.upgrade_cost = [5, 30, 50]  # [level1, level2, level3]
+        self.sell_cost = [5, 30, 50]  # [level1, level2, level3]
 
     def upgrade(self):
         """
@@ -109,8 +109,8 @@ class IceTower(Tower):
         self.board = board
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = coords
-        self.upgrade_cost = [10, 20, 30]  # [level1, level2, level3]
-        self.sell_cost = [10, 30, 60]  # [level1, level2, level3]
+        self.upgrade_cost = [10, 50, 150]  # [level1, level2, level3]
+        self.sell_cost = [10, 50, 200]  # [level1, level2, level3]
 
     def upgrade(self):
         """
@@ -145,9 +145,12 @@ class IceTower(Tower):
                     if not target.slowed:
                         target.slowed = True
                         target.speed //= 2
+                        if target.speed == 0:
+                            target.speed = 1
                     if target.get_shoted(self.power):
                         enemies.remove(target)
-                    break
+                    if self.level != 3:
+                        break
                 else:
                     enemies.remove(target)
 
@@ -179,8 +182,8 @@ class PlantTower(Tower):
         self.board = board
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = coords
-        self.upgrade_cost = [10, 20, 30]  # [level1, level2, level3]
-        self.sell_cost = [10, 30, 60]  # [level1, level2, level3]
+        self.upgrade_cost = [20, 100, 200]  # [level1, level2, level3]
+        self.sell_cost = [20, 100, 300]  # [level1, level2, level3]
 
     def attack(self, enemies):
         if enemies:
