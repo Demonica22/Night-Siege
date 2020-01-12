@@ -30,6 +30,7 @@ class Tower(pygame.sprite.Sprite):
                                       target.rect.y + self.board.cell_size // 2), 2)
                     if target.get_shoted(self.power):
                         enemies.remove(target)
+                    print(target.hp,target.max_hp)
                     break
                 else:
                     enemies.remove(target)
