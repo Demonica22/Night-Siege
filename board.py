@@ -22,7 +22,8 @@ class Board:
         self.width = width * self.cell_size
         self.height = height * self.cell_size
         self.board = board
-        self.current_money = 100
+        self.play = True
+        self.current_money = 10
         self.current_wave = 1
         self.hp_left = 100
         self.fps = 30
@@ -48,7 +49,10 @@ class Board:
         self.screen.blit(TOWER, (self.width - self.width, 2))
         self.screen.blit(STOWER, (self.width - (self.width - 1.5 * STOWER.get_width()), 2))
         self.screen.blit(TOOSTOWER, (self.width - (self.width - 3 * STOWER.get_width()), 0))
-        self.screen.blit(SOUNDICON, (self.width - SOUNDICON.get_width() - 4, 2))
+        if self.play:
+            self.screen.blit(SOUNDICON, (self.width - SOUNDICON.get_width() - 4, 2))
+        else:
+            self.screen.blit(SOUNDICONMUTED, (self.width - SOUNDICON.get_width() - 4, 2))
         self.screen.blit(HEART, (self.width - 400, 0))
         self.screen.blit(BACKGROUND, (0, 0))
         font = pygame.font.SysFont("comicsansms", 20)
@@ -82,13 +86,6 @@ class Board:
                 return True
         return False
 
-    def changemute(self):
-        self.screen.blit(SOUNDICONMUTED, (self.width - SOUNDICON.get_width() - 4, 2))
-        pygame.display.flip()
-
-    def changeplay(self):
-        self.screen.blit(SOUNDICON, (self.width - SOUNDICON.get_width() - 4, 2))
-        pygame.display.flip()
 
     # def draw_health_bar(self):
     #     """

@@ -28,14 +28,12 @@ pygame.display.flip()
 current_time = 0
 enemies_left = board.current_wave * 5
 hand = False
-play = True
 showing_range_tower = False
 enemies_delta_hp = 0
 pause_time = 300
 while running:
     if not stoped:
         current_time += 1
-        print(pause_time)
         if pause_time == 0:
             if enemies_left != 0 and current_time % (board.fps // board.enemy_rate) == 0:
                 enemies_left -= 1
@@ -100,13 +98,11 @@ while running:
                             board.current_money += 20
                             hand = False
                     elif 538 <= pos[0] <= 596 and 0 <= pos[1] <= 60:
-                        if play:
+                        if board.play:
                             pygame.mixer.music.pause()
-                            play = False
-                            board.changemute()
+                            board.play = False
                         else:
-                            play = True
-                            board.changeplay()
+                            board.play = True
                             pygame.mixer.music.unpause()
                     if board.clicked(pos[0], pos[1]):
                         if not hand:
