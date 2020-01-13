@@ -27,7 +27,7 @@ class Tower(pygame.sprite.Sprite):
                         self.rect.y - self.range * self.board.cell_size <= target.rect.y <= self.rect.y + \
                         self.range * self.board.cell_size:
                     shot = Shot(self.shots, self.board,
-                                (self.rect.x + self.image.get_width()//2, self.rect.y + self.image.get_height()//2), 1,
+                                (self.rect.x + self.image.get_width()//2, self.rect.y + self.image.get_height()//4), 1,
                                 self.power, target)
                     break
                 else:
@@ -143,7 +143,7 @@ class IceTower(Tower):
                         if target.speed == 0:
                             target.speed = 1
                     shot = Shot(self.shots, self.board,
-                                (self.rect.x + self.image.get_width() // 2, self.rect.y + self.image.get_height() // 2),
+                                (self.rect.x + self.image.get_width() // 2, self.rect.y + self.image.get_height() // 4),
                                 2,
                                 self.power, target)
                     shot.draw(self.board.screen)
@@ -191,7 +191,7 @@ class PlantTower(Tower):
                         self.rect.y - self.range * self.board.cell_size <= target.rect.y <= self.rect.y + \
                         self.range * self.board.cell_size:
                     shot = Shot(self.shots, self.board,
-                                (self.rect.x + self.image.get_width() // 2, self.rect.y + self.image.get_height() // 2),
+                                (self.rect.x + self.image.get_width() // 2, self.rect.y + self.image.get_height() // 4),
                                 3,
                                 self.power, target)
                     shot.draw(self.board.screen)

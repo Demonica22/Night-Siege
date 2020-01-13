@@ -1,8 +1,8 @@
 import pygame
 
-test = pygame.image.load("data/redball.png")
-test_b = pygame.image.load("data/blueball.png")
-test_g = pygame.image.load("data/greenball.png")
+RED = pygame.image.load("data/redball.png")
+BLUE = pygame.image.load("data/blueball.png")
+GREEN = pygame.image.load("data/greenball.png")
 
 
 class Shot(pygame.sprite.Sprite):
@@ -14,7 +14,7 @@ class Shot(pygame.sprite.Sprite):
         self.target = target
         self.speed = 180 // board.fps
         self.power = power
-        self.image = [test, test_b, test_g][self.color - 1]
+        self.image = [RED, BLUE, GREEN][self.color - 1]
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = pos
         self.killed = False
