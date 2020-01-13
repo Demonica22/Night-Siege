@@ -99,14 +99,15 @@ while running:
                         elif hand == "plant":
                             board.current_money += 20
                             hand = False
-                    elif 480 <= pos[0] <= 538 and 0 <= pos[1] <= 60:
+                    elif 538 <= pos[0] <= 596 and 0 <= pos[1] <= 60:
                         if play:
                             pygame.mixer.music.pause()
                             play = False
+                            board.changemute()
                         else:
                             play = True
+                            board.changeplay()
                             pygame.mixer.music.unpause()
-
                     if board.clicked(pos[0], pos[1]):
                         if not hand:
                             for tower in all_towers.sprites():

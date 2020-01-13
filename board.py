@@ -9,7 +9,9 @@ TOWER = pygame.image.load('data/bigtower.png')
 STOWER = pygame.image.load('data/bigtower2.png')
 TOOSTOWER = pygame.image.load('data/bigtower3.png')
 SOUNDICON = pygame.image.load('data/sound.png')
-
+SOUNDICONMUTED = pygame.image.load('data/soundmute.png')
+HEART = pygame.image.load('data/сердце.png')
+BACKGROUND = pygame.image.load('data/background.png')
 
 class Board:
     def __init__(self, width, height, board, screen):
@@ -20,7 +22,7 @@ class Board:
         self.width = width * self.cell_size
         self.height = height * self.cell_size
         self.board = board
-        self.current_money = 10
+        self.current_money = 100
         self.current_wave = 1
         self.hp_left = 100
         self.fps = 30
@@ -42,28 +44,37 @@ class Board:
                 else:
                     self.screen.blit(WALL, (x, y))
                 # pygame.draw.rect(self.screen, (0, 0, 0), (x, y, self.cell_size, self.cell_size), 1)
-        self.screen.blit(COINS, (self.width - COINS.get_width(), 0))
-        self.screen.blit(TOWER, (self.width - self.width, 0))
-        self.screen.blit(STOWER, (self.width - (self.width - 1.5 * STOWER.get_width()), 0))
+        self.screen.blit(COINS, (self.width - 3 * COINS.get_width() - 115, 2))
+        self.screen.blit(TOWER, (self.width - self.width, 2))
+        self.screen.blit(STOWER, (self.width - (self.width - 1.5 * STOWER.get_width()), 2))
         self.screen.blit(TOOSTOWER, (self.width - (self.width - 3 * STOWER.get_width()), 0))
-        self.screen.blit(SOUNDICON, (self.width - 3 * COINS.get_width(), 0))
-        font = pygame.font.Font(None, 30)
+        self.screen.blit(SOUNDICON, (self.width - SOUNDICON.get_width() - 4, 2))
+        self.screen.blit(HEART, (self.width - 400, 0))
+        self.screen.blit(BACKGROUND, (0, 0))
+        font = pygame.font.SysFont("comicsansms", 20)
         text = font.render("5", 1, (100, 255, 100))
-        self.screen.blit(text, (self.width - self.width + 10, 40))
+        self.screen.blit(text, (self.width - self.width + 14, 30))
         text = font.render("10", 1, (100, 255, 100))
-        self.screen.blit(text, (67, 40))
+        self.screen.blit(text, (69, 30))
         text = font.render("20", 1, (100, 255, 100))
-        self.screen.blit(text, (self.width - (self.width - 3.2 * STOWER.get_width()), 40))
+        self.screen.blit(text, (self.width - (self.width - 3.2 * STOWER.get_width()) - 1, 30))
         # TO MAKE NORMAL
-        wave_text = font.render("current_wave " + str(self.current_wave), 1, (255, 0, 0))
-        self.screen.blit(wave_text, (self.width - 290, 40))
+        wavefont = pygame.font.SysFont("comicsansms", 26)
+        wave_text = wavefont.render('ВОЛНА', 1, (255, 0, 0))
+        self.screen.blit(wave_text, (self.width - 340, 0))
+        l = (5 - len(str(self.current_wave))) // 2
+        self.retwave = ' ' * int(l) + str(self.current_wave) + ' ' * int(l)
+        wavenum_text = font.render(str(self.retwave), 1, (255, 0, 0))
+        self.screen.blit(wavenum_text, (self.width - 310, 30))
         # TO MAKE NORMAL
-        moneytext = font.render(str(self.current_money), 1, (100, 255, 100))
-        self.screen.blit(moneytext, (self.width - (COINS.get_width() // 1.2), 40))
+        l1 = (5 - len(str(self.current_money))) / 2
+        self.retmoney = '  ' * int(l1) + str(self.current_money) + ' ' * int(l1)
+        moneytext = font.render(str(self.retmoney), 1, (100, 255, 100))
+        self.screen.blit(moneytext, (self.width - 3 * COINS.get_width() - 127,  32))
         # СДЕЛАТЬ НОРМАЛЬНО
-        hp_text = font.render("HP " + str(self.hp_left), 1, (100, 255, 100))
-        self.screen.blit(hp_text, (self.width - 400, 40))
-        self.draw_health_bar()
+        hp_text = font.render(str(self.hp_left), 1, (100, 255, 100))
+        self.screen.blit(hp_text, (self.width - 398, 30))
+        # self.draw_health_bar()
 
     def clicked(self, x, y):
         if self.offset[0] <= x <= self.offset[0] + self.width:
@@ -71,14 +82,22 @@ class Board:
                 return True
         return False
 
-    def draw_health_bar(self):
-        """
-        Рисует полоску ХП Игрока
-        :return: None
-        """
-        length = 65
-        move_by = length / 100
-        health_bar = round(
-            move_by * self.hp_left)  # НУЖНО СДЕЛАТЬ НОРМАЛЬНУЮ РАБОТУ С hp_left, подключение к классу добавить
-        pygame.draw.rect(self.screen, (255, 0, 0), (200, 20, length, 5), 0)
-        pygame.draw.rect(self.screen, (0, 255, 0), (200, 20, health_bar, 5), 0)
+    def changemute(self):
+        self.screen.blit(SOUNDICONMUTED, (self.width - SOUNDICON.get_width() - 4, 2))
+        pygame.display.flip()
+
+    def changeplay(self):
+        self.screen.blit(SOUNDICON, (self.width - SOUNDICON.get_width() - 4, 2))
+        pygame.display.flip()
+
+    # def draw_health_bar(self):
+    #     """
+    #     Рисует полоску ХП Игрока
+    #     :return: None
+    #     """
+    #     length = 65
+    #     move_by = length / 100
+    #     health_bar = round(
+    #         move_by * self.hp_left)  # НУЖНО СДЕЛАТЬ НОРМАЛЬНУЮ РАБОТУ С hp_left, подключение к классу добавить
+    #     pygame.draw.rect(self.screen, (255, 0, 0), (200, 20, length, 5), 0)
+    #     pygame.draw.rect(self.screen, (0, 255, 0), (200, 20, health_bar, 5), 0)
