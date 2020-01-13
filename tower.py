@@ -1,4 +1,5 @@
 import pygame
+from shot import Shot
 
 pygame.init()
 
@@ -10,6 +11,7 @@ class Tower(pygame.sprite.Sprite):
         self.range = 1  # дальность атаки башни
         self.power = 1
         self.is_clicked = False
+        self.shots = pygame.sprite.Group()
 
     def clicked(self, x, y):
         if x <= self.x + self.image.get_width() and self.x >= x:
@@ -24,13 +26,9 @@ class Tower(pygame.sprite.Sprite):
                         self.range * self.board.cell_size and \
                         self.rect.y - self.range * self.board.cell_size <= target.rect.y <= self.rect.y + \
                         self.range * self.board.cell_size:
-                    pygame.draw.line(self.board.screen, (180, 0, 0),
-                                     (self.rect.x + self.board.cell_size // 2, self.rect.y + self.board.cell_size // 4),
-                                     (target.rect.x + self.board.cell_size // 2,
-                                      target.rect.y + self.board.cell_size // 2), 2)
-                    if target.get_shoted(self.power):
-                        enemies.remove(target)
-                    print(target.hp,target.max_hp)
+                    shot = Shot(self.shots, self.board,
+                                (self.rect.x + self.image.get_width()//2, self.rect.y + self.image.get_height()//2), 1,
+                                self.power, target)
                     break
                 else:
                     enemies.remove(target)
@@ -139,17 +137,16 @@ class IceTower(Tower):
                         self.range * self.board.cell_size and \
                         self.rect.y - self.range * self.board.cell_size <= target.rect.y <= self.rect.y + \
                         self.range * self.board.cell_size:
-                    pygame.draw.line(self.board.screen, (0, 0, 200),
-                                     (self.rect.x + self.board.cell_size // 2, self.rect.y + self.board.cell_size // 4),
-                                     (target.rect.x + self.board.cell_size // 2,
-                                      target.rect.y + self.board.cell_size // 2), 2)
                     if not target.slowed:
                         target.slowed = True
                         target.speed //= 2
                         if target.speed == 0:
                             target.speed = 1
-                    if target.get_shoted(self.power):
-                        enemies.remove(target)
+                    shot = Shot(self.shots, self.board,
+                                (self.rect.x + self.image.get_width() // 2, self.rect.y + self.image.get_height() // 2),
+                                2,
+                                self.power, target)
+                    shot.draw(self.board.screen)
                     if self.level != 3:
                         break
                 else:
@@ -193,12 +190,11 @@ class PlantTower(Tower):
                         self.range * self.board.cell_size and \
                         self.rect.y - self.range * self.board.cell_size <= target.rect.y <= self.rect.y + \
                         self.range * self.board.cell_size:
-                    pygame.draw.line(self.board.screen, (0, 200, 0),
-                                     (self.rect.x + self.board.cell_size // 2, self.rect.y + self.board.cell_size // 4),
-                                     (target.rect.x + self.board.cell_size // 2,
-                                      target.rect.y + self.board.cell_size // 2), 2)
-                    if target.get_shoted(self.power):
-                        enemies.remove(target)
+                    shot = Shot(self.shots, self.board,
+                                (self.rect.x + self.image.get_width() // 2, self.rect.y + self.image.get_height() // 2),
+                                3,
+                                self.power, target)
+                    shot.draw(self.board.screen)
                 else:
                     enemies.remove(target)
 

@@ -141,6 +141,12 @@ while running:
         all_towers.draw(screen)
         all_enemies.draw(screen)
         all_enemies.update()
+        for tower in all_towers:
+            for shot in tower.shots.copy():
+                if shot.killed:
+                    tower.shots.remove(shot)
+            tower.shots.draw(screen)
+            tower.shots.update()
         if showing_range_tower:
             showing_range_tower.draw_range()
         for tower in all_towers.sprites():
