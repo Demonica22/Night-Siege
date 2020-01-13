@@ -1,8 +1,8 @@
 import pygame
 
-test = pygame.image.load("data/TEST.png")
-test_b = pygame.image.load("data/TEST_b.png")
-test_g = pygame.image.load("data/TEST_g.png")
+test = pygame.image.load("data/redball.png")
+test_b = pygame.image.load("data/blueball.png")
+test_g = pygame.image.load("data/greenball.png")
 
 
 class Shot(pygame.sprite.Sprite):
