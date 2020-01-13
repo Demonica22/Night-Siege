@@ -13,6 +13,7 @@ SOUNDICONMUTED = pygame.image.load('data/soundmute.png')
 HEART = pygame.image.load('data/сердце.png')
 BACKGROUND = pygame.image.load('data/background.png')
 
+
 class Board:
     def __init__(self, width, height, board, screen):
         self.cell_size = 30
@@ -72,9 +73,12 @@ class Board:
         self.screen.blit(wavenum_text, (self.width - 310, 30))
         # TO MAKE NORMAL
         l1 = (5 - len(str(self.current_money))) / 2
-        self.retmoney = '  ' * int(l1) + str(self.current_money) + ' ' * int(l1)
+        if self.current_money == 10:
+            self.retmoney = '   ' * int(l1) + str(self.current_money) + ' ' * int(l1)
+        else:
+            self.retmoney = '  ' * int(l1) + str(self.current_money) + ' ' * int(l1)
         moneytext = font.render(str(self.retmoney), 1, (100, 255, 100))
-        self.screen.blit(moneytext, (self.width - 3 * COINS.get_width() - 127,  32))
+        self.screen.blit(moneytext, (self.width - 3 * COINS.get_width() - 127, 32))
         # СДЕЛАТЬ НОРМАЛЬНО
         hp_text = font.render(str(self.hp_left), 1, (100, 255, 100))
         self.screen.blit(hp_text, (self.width - 398, 30))
@@ -85,7 +89,6 @@ class Board:
             if self.offset[1] <= y <= self.offset[1] + self.height:
                 return True
         return False
-
 
     # def draw_health_bar(self):
     #     """
