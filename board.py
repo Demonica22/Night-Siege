@@ -87,7 +87,6 @@ class Board:
             self.hp = '  ' * int(l2) + str(self.hp_left) + ' ' * int(l2)
         hp_text = font.render(str(self.hp), 1, (100, 255, 100))
         self.screen.blit(hp_text, (self.width - 398, 30))
-        # self.draw_health_bar()
 
     def clicked(self, x, y):
         if self.offset[0] <= x <= self.offset[0] + self.width:
@@ -97,15 +96,3 @@ class Board:
 
     def diedwin(self):
         self.screen.blit(DIEDWINDOW, (0, 0))
-
-    # def draw_health_bar(self):
-    #     """
-    #     Рисует полоску ХП Игрока
-    #     :return: None
-    #     """
-    #     length = 65
-    #     move_by = length / 100
-    #     health_bar = round(
-    #         move_by * self.hp_left)  # НУЖНО СДЕЛАТЬ НОРМАЛЬНУЮ РАБОТУ С hp_left, подключение к классу добавить
-    #     pygame.draw.rect(self.screen, (255, 0, 0), (200, 20, length, 5), 0)
-    #     pygame.draw.rect(self.screen, (0, 255, 0), (200, 20, health_bar, 5), 0)

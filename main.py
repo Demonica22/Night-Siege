@@ -166,16 +166,28 @@ while running:
         pygame.display.flip()
         clock.tick(board.fps)
     else:
-        font = pygame.font.Font(None, 40)
-        message = ["Вы проиграли.", "Ваш рекорд - " + str(board.current_wave)+" волна.",
-                   "Нажмите пробел,чтобы начать заного."]
         board.diedwin()
-        delta = 0
-        for mess in message:
-            lost_text = font.render(mess, 1, (255, 0, 0))
-            delta += 30
-
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    screen = pygame.display.set_mode((600, 600))
+                    board = Board(*scan_level("new_level"), screen)
+                    pygame.mixer.music.load('sounds\soundtrack.mp3')
+                    pygame.mixer.music.play(-1)
+                    running = True
+                    stoped = False
+                    screen.fill((71, 45, 23))
+                    board.render()
+                    all_enemies = pygame.sprite.Group()
+                    all_towers = pygame.sprite.Group()
+                    clock = pygame.time.Clock()
+                    pygame.display.flip()
+                    current_time = 0
+                    enemies_left = board.current_wave * 5
+                    hand = False
+                    showing_range_tower = False
+                    enemies_delta_hp = 0
+                    pause_time = 300
