@@ -12,7 +12,6 @@ SOUNDICON = pygame.image.load('data/sound.png')
 SOUNDICONMUTED = pygame.image.load('data/soundmute.png')
 HEART = pygame.image.load('data/сердце.png')
 BACKGROUND = pygame.image.load('data/background.png')
-DIEDWINDOW = pygame.image.load('data/diedwindow.png')
 
 class Board:
     def __init__(self, width, height, board, screen):
@@ -26,7 +25,7 @@ class Board:
         self.play = True
         self.current_money = 10
         self.current_wave = 1
-        self.hp_left = 0
+        self.hp_left = 1
         self.fps = 30
         self.enemy_rate = 1  # кол-во монстров в секунду
 
@@ -93,6 +92,3 @@ class Board:
             if self.offset[1] <= y <= self.offset[1] + self.height:
                 return True
         return False
-
-    def diedwin(self):
-        self.screen.blit(DIEDWINDOW, (0, 0))
