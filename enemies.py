@@ -2,7 +2,6 @@ import pygame
 
 pygame.init()
 
-MONSTER = pygame.image.load("data/monster.jpg")
 ZOMBIE = pygame.image.load("data/zombie.png")
 WIZARD = pygame.image.load("data/wizard.png")
 WARRIOR = pygame.image.load("data/warrior.png")
@@ -10,7 +9,7 @@ WARRIOR = pygame.image.load("data/warrior.png")
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, group, board):
-        self.image = MONSTER
+        self.image = ZOMBIE
         super().__init__(group)
         self.board = board
         self.rect = self.image.get_rect()
