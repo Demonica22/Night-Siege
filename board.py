@@ -12,7 +12,7 @@ SOUNDICON = pygame.image.load('data/sound.png')
 SOUNDICONMUTED = pygame.image.load('data/soundmute.png')
 HEART = pygame.image.load('data/сердце.png')
 BACKGROUND = pygame.image.load('data/background.png')
-
+DIEDWINDOW = pygame.image.load('data/diedwindow.png')
 
 class Board:
     def __init__(self, width, height, board, screen):
@@ -26,7 +26,7 @@ class Board:
         self.play = True
         self.current_money = 10
         self.current_wave = 1
-        self.hp_left = 100
+        self.hp_left = 0
         self.fps = 30
         self.enemy_rate = 1  # кол-во монстров в секунду
 
@@ -80,7 +80,12 @@ class Board:
         moneytext = font.render(str(self.retmoney), 1, (100, 255, 100))
         self.screen.blit(moneytext, (self.width - 3 * COINS.get_width() - 127, 32))
         # СДЕЛАТЬ НОРМАЛЬНО
-        hp_text = font.render(str(self.hp_left), 1, (100, 255, 100))
+        l2 = (3 - len(str(self.hp_left))) / 2
+        if len(str(self.hp_left)) != 1:
+            self.hp = ' ' * int(l2) + str(self.hp_left) + ' ' * int(l2)
+        else:
+            self.hp = '  ' * int(l2) + str(self.hp_left) + ' ' * int(l2)
+        hp_text = font.render(str(self.hp), 1, (100, 255, 100))
         self.screen.blit(hp_text, (self.width - 398, 30))
         # self.draw_health_bar()
 
@@ -89,6 +94,9 @@ class Board:
             if self.offset[1] <= y <= self.offset[1] + self.height:
                 return True
         return False
+
+    def diedwin(self):
+        self.screen.blit(DIEDWINDOW, (0, 0))
 
     # def draw_health_bar(self):
     #     """

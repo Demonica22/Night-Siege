@@ -169,11 +169,12 @@ while running:
         font = pygame.font.Font(None, 40)
         message = ["Вы проиграли.", "Ваш рекорд - " + str(board.current_wave)+" волна.",
                    "Нажмите пробел,чтобы начать заного."]
+        board.diedwin()
         delta = 0
         for mess in message:
             lost_text = font.render(mess, 1, (255, 0, 0))
-            screen.blit(lost_text, (50, 200 + delta))
             delta += 30
+
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
