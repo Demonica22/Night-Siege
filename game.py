@@ -233,3 +233,5 @@ class Game:
                         if event.button == 1:
                             if 500 <= pos[0] <= 559 and 0 <= pos[1] <= 60:
                                 self.paused = False
+                    if event.type == pygame.QUIT:
+                        self.running = False
