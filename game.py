@@ -76,10 +76,12 @@ class Game:
                     if self.enemies_left != 0 and self.current_time % (self.board.fps // self.board.enemy_rate) == 0:
                         self.enemies_left -= 1
                         if self.board.current_wave <= 5:
+                            if self.board.current_wave > 3:
+                                self.enemies_delta_hp += 5
                             enemy = Zombie(self.all_enemies, self.board)
-                            enemy.hp += self.enemies_delta_hp
                             enemy.max_hp = enemy.hp
                         elif 3 < self.board.current_wave <= 10:
+                            self.enemies_delta_hp += 10
                             self.board.enemy_rate = 2
                             enemy = random.choice([1, 2])
                             if enemy == 1:
@@ -90,6 +92,7 @@ class Game:
                             enemy.hp *= 3
                             enemy.max_hp = enemy.hp
                         else:
+                            self.enemies_delta_hp += 20
                             self.board.enemy_rate = 3
                             enemy = random.choice([1, 2, 3])
                             if enemy == 1:
@@ -102,7 +105,8 @@ class Game:
                             enemy.hp *= 5
                             enemy.max_hp = enemy.hp
                         if self.board.current_wave >= 20:
-                            enemy.hp *= 10
+                            self.enemies_delta_hp *= 10
+                            enemy.hp += self.enemies_delta_hp
                             enemy.max_hp = enemy.hp
                 else:
                     self.pause_time -= 1
@@ -195,7 +199,7 @@ class Game:
                     tower.shots.draw(self.screen)
                     tower.shots.update()
                 if self.showing_info_tower:
-                    self.showing_info_tower.draw_range()
+                    self.showing_info_tower.draw_info()
                 for tower in self.all_towers.sprites():
                     if self.current_time % 15 == 0:
                         tower.attack(self.all_enemies.sprites())

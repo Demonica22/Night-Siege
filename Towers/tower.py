@@ -34,7 +34,7 @@ class Tower(pygame.sprite.Sprite):
                 else:
                     enemies.remove(target)
 
-    def draw_range(self):
+    def draw_info(self):
         if self.is_clicked:
             if self.board.offset[1] > self.rect.y - (self.board.cell_size * self.range):
                 delta = self.board.offset[1] - (self.rect.y - (self.board.cell_size * self.range))

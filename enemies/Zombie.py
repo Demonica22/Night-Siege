@@ -1,5 +1,5 @@
 import pygame
-from enemies.enemie import Enemy
+from enemies.enemy import Enemy
 
 pygame.init()
 
