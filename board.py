@@ -2,7 +2,7 @@ import pygame
 
 WALL = pygame.image.load('data/wall.png')
 WALKWAY = pygame.image.load('data/walkway.jpg')
-LEVEL_ENDING = pygame.image.load('data/end.jpg')
+LEVEL_ENDING = pygame.image.load('data/end.png')
 COINS = pygame.image.load('data/coins.png')
 START = pygame.image.load('data/start.png')
 TOWER = pygame.image.load('data/bigtower.png')

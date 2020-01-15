@@ -147,7 +147,7 @@ class Game:
                                 else:
                                     self.board.play = True
                                     pygame.mixer.music.unpause()
-                            elif 500 <= pos[0] <= 559 and 0 <= pos[1] <= 60:
+                            if 465 <= pos[0] <= 524 and 0 <= pos[1] <= 60:
                                 self.paused = True
                             if self.board.clicked(pos[0], pos[1]):
                                 if not self.hand:
@@ -231,7 +231,7 @@ class Game:
                         pos = event.pos
                         print(pos)
                         if event.button == 1:
-                            if 500 <= pos[0] <= 559 and 0 <= pos[1] <= 60:
+                            if 465 <= pos[0] <= 524 and 0 <= pos[1] <= 60:
                                 self.paused = False
                     if event.type == pygame.QUIT:
                         self.running = False
