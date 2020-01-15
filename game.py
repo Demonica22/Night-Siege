@@ -1,6 +1,10 @@
 import pygame
-from enemies import Zombie, Wizard, Warrior
-from tower import IceTower, FireTower, PlantTower
+from enemies.Zombie import Zombie
+from enemies.Warrior import Warrior
+from enemies.Wizard import Wizard
+from Towers.FireTower import FireTower
+from Towers.IceTower import IceTower
+from Towers.PlantTower import PlantTower
 from board import Board
 from level_scaner import scan_level
 import random

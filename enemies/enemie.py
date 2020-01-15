@@ -3,8 +3,6 @@ import pygame
 pygame.init()
 
 ZOMBIE = pygame.image.load("data/zombie.png")
-WIZARD = pygame.image.load("data/wizard.png")
-WARRIOR = pygame.image.load("data/warrior.png")
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -154,48 +152,3 @@ class Enemy(pygame.sprite.Sprite):
 
         pygame.draw.rect(self.board.screen, (255, 0, 0), (self.rect.x, self.rect.y - 5, length, 2), 0)
         pygame.draw.rect(self.board.screen, (0, 255, 0), (self.rect.x, self.rect.y - 5, health_bar, 2), 0)
-
-
-class Zombie(Enemy):
-    def __init__(self, group, board):
-        super().__init__(group, board)
-        self.image = ZOMBIE
-        self.board = board
-        self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = self.board.start_pos
-        self.passed_cells = set()  # множество из координат клеток, которые монстр уже прошел
-        self.hp = 40
-        self.max_hp = self.hp
-        self.speed = 60 // self.board.fps
-        self.reward = 1
-        self.damage = 1  # Урон по крепости
-
-
-class Wizard(Enemy):
-    def __init__(self, group, board):
-        super().__init__(group, board)
-        self.image = WIZARD
-        self.board = board
-        self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = self.board.start_pos
-        self.passed_cells = set()  # множество из координат клеток, которые монстр уже прошел
-        self.hp = 50
-        self.max_hp = self.hp
-        self.speed = 90 // self.board.fps
-        self.reward = 1
-        self.damage = 2  # Урон по крепости
-
-
-class Warrior(Enemy):
-    def __init__(self, group, board):
-        super().__init__(group, board)
-        self.image = WARRIOR
-        self.board = board
-        self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = self.board.start_pos
-        self.passed_cells = set()  # множество из координат клеток, которые монстр уже прошел
-        self.hp = 150
-        self.max_hp = self.hp
-        self.speed = 30 // self.board.fps
-        self.reward = 15
-        self.damage = 5  # Урон по крепости
