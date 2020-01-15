@@ -12,7 +12,7 @@ SOUNDICON = pygame.image.load('data/sound.png')
 SOUNDICONMUTED = pygame.image.load('data/soundmute.png')
 HEART = pygame.image.load('data/сердце.png')
 BACKGROUND = pygame.image.load('data/background.png')
-
+PAUSED = pygame.image.load('data/pause.png')
 
 class Board:
     def __init__(self, width, height, board, screen):
@@ -53,6 +53,7 @@ class Board:
         self.screen.blit(TOWER, (self.width - self.width, 2))
         self.screen.blit(STOWER, (self.width - (self.width - 1.5 * STOWER.get_width()), 2))
         self.screen.blit(TOOSTOWER, (self.width - (self.width - 3 * STOWER.get_width()), 0))
+        self.screen.blit(PAUSED, (self.width - SOUNDICON.get_width() - 74, 2))
         if self.play:
             self.screen.blit(SOUNDICON, (self.width - SOUNDICON.get_width() - 4, 2))
         else:

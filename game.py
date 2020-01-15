@@ -115,6 +115,7 @@ class Game:
                         self.running = False
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         pos = event.pos
+                        print(pos)
                         if event.button == 1:
                             if self.showing_info_tower:
                                 self.showing_info_tower.is_clicked = False
@@ -146,6 +147,8 @@ class Game:
                                 else:
                                     self.board.play = True
                                     pygame.mixer.music.unpause()
+                            elif 500 <= pos[0] <= 559 and 0 <= pos[1] <= 60:
+                                self.paused = True
                             if self.board.clicked(pos[0], pos[1]):
                                 if not self.hand:
                                     for tower in self.all_towers.sprites():
@@ -184,9 +187,6 @@ class Game:
                                     self.all_towers.remove(tower)
                                     if self.showing_info_tower == tower:
                                         self.showing_info_tower = False
-                    elif event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_SPACE:
-                            self.paused = True
                 self.screen.fill((71, 45, 23))
                 self.board.render()
                 self.all_towers.draw(self.screen)
@@ -227,8 +227,9 @@ class Game:
                             self.restart()
             elif self.paused:
                 for event in pygame.event.get():
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_SPACE:
-                            self.paused = False
-                    if event.type == pygame.QUIT:
-                        self.running = False
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = event.pos
+                        print(pos)
+                        if event.button == 1:
+                            if 500 <= pos[0] <= 559 and 0 <= pos[1] <= 60:
+                                self.paused = False
