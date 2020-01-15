@@ -147,7 +147,6 @@ class IceTower(Tower):
                                 (self.rect.x + self.image.get_width() // 2, self.rect.y + self.image.get_height() // 4),
                                 2,
                                 self.power, target)
-                    shot.draw(self.board.screen)
                     if self.level != 3:
                         break
                 else:
@@ -200,7 +199,6 @@ class PlantTower(Tower):
                                 (self.rect.x + self.image.get_width() // 2, self.rect.y + self.image.get_height() // 4),
                                 3,
                                 self.power, target)
-                    shot.draw(self.board.screen)
                 else:
                     enemies.remove(target)
 

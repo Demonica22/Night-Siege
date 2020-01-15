@@ -13,6 +13,7 @@ SOUNDICONMUTED = pygame.image.load('data/soundmute.png')
 HEART = pygame.image.load('data/сердце.png')
 BACKGROUND = pygame.image.load('data/background.png')
 
+
 class Board:
     def __init__(self, width, height, board, screen):
         self.cell_size = 30

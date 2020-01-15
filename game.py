@@ -16,6 +16,7 @@ class Game:
         self.stoped = False  # была ли остановлена игра (проигрыш)
         self.hand = False  # занята ли рука ( после покупки башни кладутся в руку)
         self.showing_range_tower = False  # отображает ли одна из бишен свою дальность атаки
+        self.paused = False
         self.all_enemies = pygame.sprite.Group()
         self.all_towers = pygame.sprite.Group()
         self.clock = pygame.time.Clock()
@@ -35,6 +36,7 @@ class Game:
         self.stoped = False  # была ли остановлена игра (проигрыш)
         self.hand = False  # занята ли рука ( после покупки башни кладутся в руку)
         self.showing_range_tower = False  # отображает ли одна из бишен свою дальность атаки
+        self.paused = False
         self.all_enemies = pygame.sprite.Group()
         self.all_towers = pygame.sprite.Group()
         self.clock = pygame.time.Clock()
@@ -63,7 +65,7 @@ class Game:
         self.board.render()
         pygame.display.flip()
         while self.running:
-            if not self.stoped:
+            if not self.stoped and not self.paused:
                 self.current_time += 1
                 if self.pause_time == 0:
                     if self.enemies_left != 0 and self.current_time % (self.board.fps // self.board.enemy_rate) == 0:
@@ -100,6 +102,13 @@ class Game:
                 else:
                     self.pause_time -= 1
                 for event in pygame.event.get():
+                    if event.type == pygame.MOUSEMOTION:
+                        pos = event.pos
+                        for tower in self.all_towers:
+                            if tower.clicked(pos[0], pos[1]):
+                                print(1)
+                                info_screen = pygame.Surface((30, 50))
+                                self.screen.blit(info_screen, pos)
                     if event.type == pygame.QUIT:
                         self.running = False
                     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -171,6 +180,11 @@ class Game:
                                     self.board.board[(tower.rect.y - self.board.offset[1]) // 30][
                                         (tower.rect.x - self.board.offset[0]) // 30] = "#"
                                     self.all_towers.remove(tower)
+                                    if self.showing_range_tower == tower:
+                                        self.showing_range_tower = False
+                    elif event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_SPACE:
+                            self.paused = True
                 self.screen.fill((71, 45, 23))
                 self.board.render()
                 self.all_towers.draw(self.screen)
@@ -200,7 +214,7 @@ class Game:
                     self.stoped = True
                 pygame.display.flip()
                 self.clock.tick(self.board.fps)
-            else:
+            elif self.stoped:
                 self.draw_die_win()
                 pygame.display.flip()
                 for event in pygame.event.get():
@@ -209,3 +223,10 @@ class Game:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_SPACE:
                             self.restart()
+            elif self.paused:
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_SPACE:
+                            self.paused = False
+                    if event.type == pygame.QUIT:
+                        self.running = False
