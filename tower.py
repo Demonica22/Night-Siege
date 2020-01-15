@@ -27,7 +27,8 @@ class Tower(pygame.sprite.Sprite):
                         self.rect.y - self.range * self.board.cell_size <= target.rect.y <= self.rect.y + \
                         self.range * self.board.cell_size:
                     shot = Shot(self.shots, self.board,
-                                (self.rect.x + self.image.get_width()//2, self.rect.y + self.image.get_height()//4), 1,
+                                (self.rect.x + self.image.get_width() // 2, self.rect.y + self.image.get_height() // 4),
+                                1,
                                 self.power, target)
                     break
                 else:
@@ -184,6 +185,11 @@ class PlantTower(Tower):
         self.sell_cost = [19, 100, 300]  # [level1, level2, level3]
 
     def attack(self, enemies):
+        """
+        Если хотя бы один монстр из списка монстров входит в радиус атаки, то атакует его.
+        :param enemies: list of enemies (pygame.sprite.Group)
+        :return: None
+        """
         if enemies:
             for target in enemies.copy():
                 if self.rect.x - self.range * self.board.cell_size <= target.rect.x <= self.rect.x + \

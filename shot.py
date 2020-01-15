@@ -20,38 +20,42 @@ class Shot(pygame.sprite.Sprite):
         self.killed = False
 
     def update(self, *args):
+        """
+        Проверяет, различие между своими координатами и координатами цели. Двигается исходя из различия
+        :param args:
+        :return: None
+        """
         if self.rect.x != (
-                self.target.rect.x + self.target.image.get_width()//2) or self.rect.y != (
-                self.target.rect.y + self.target.image.get_height()//2):
+                self.target.rect.x + self.target.image.get_width() // 2) or self.rect.y != (
+                self.target.rect.y + self.target.image.get_height() // 2):
             delta = False
-            if self.rect.x != self.target.rect.x + self.target.image.get_width()//2:
-                if abs(self.rect.x - (self.target.rect.x + self.target.image.get_width()//2)) < self.speed:
-                    delta = abs(self.rect.x - (self.target.rect.x + self.target.image.get_width()//2))
+            if self.rect.x != self.target.rect.x + self.target.image.get_width() // 2:
+                if abs(self.rect.x - (self.target.rect.x + self.target.image.get_width() // 2)) < self.speed:
+                    delta = abs(self.rect.x - (self.target.rect.x + self.target.image.get_width() // 2))
                 if not delta:
-                    if (self.target.rect.x + self.target.image.get_width()//2) > self.rect.x:
+                    if (self.target.rect.x + self.target.image.get_width() // 2) > self.rect.x:
                         self.rect.x += self.speed
                     else:
                         self.rect.x -= self.speed
                 else:
-                    if (self.target.rect.x + self.target.image.get_width()//2) > self.rect.x:
+                    if (self.target.rect.x + self.target.image.get_width() // 2) > self.rect.x:
                         self.rect.x += delta
                     else:
                         self.rect.x -= delta
             delta = False
-            if self.rect.y != (self.target.rect.y + self.target.image.get_height()//2):
-                if abs(self.rect.y - (self.target.rect.y + self.target.image.get_height()//2)) < self.speed:
-                    delta = abs(self.rect.y - (self.target.rect.y + self.target.image.get_height()//2))
+            if self.rect.y != (self.target.rect.y + self.target.image.get_height() // 2):
+                if abs(self.rect.y - (self.target.rect.y + self.target.image.get_height() // 2)) < self.speed:
+                    delta = abs(self.rect.y - (self.target.rect.y + self.target.image.get_height() // 2))
                 if not delta:
-                    if (self.target.rect.y + self.target.image.get_height()//2) > self.rect.y:
+                    if (self.target.rect.y + self.target.image.get_height() // 2) > self.rect.y:
                         self.rect.y += self.speed
                     else:
                         self.rect.y -= self.speed
                 else:
-                    if (self.target.rect.y + self.target.image.get_height()//2) > self.rect.y:
+                    if (self.target.rect.y + self.target.image.get_height() // 2) > self.rect.y:
                         self.rect.y += delta
                     else:
                         self.rect.y -= delta
-            self.draw(self.board.screen)
         else:
             if self.color == 2:
                 if not self.target.slowed:
@@ -61,6 +65,3 @@ class Shot(pygame.sprite.Sprite):
                         self.target.speed = 1
             self.target.get_shoted(self.power)
             self.killed = True
-
-    def draw(self, *args, **kwargs):
-        pass

@@ -25,6 +25,10 @@ class Game:
         self.pause_time = 300  # время между волнами
 
     def restart(self):
+        """
+        Обновляет все значения для новой игры.
+        :return: None
+        """
         self.screen = pygame.display.set_mode((600, 600))
         self.board = Board(*scan_level("new_level"), self.screen)
         self.running = True  # идет ли игра
@@ -45,6 +49,10 @@ class Game:
         pygame.display.flip()
 
     def draw_die_win(self):
+        """
+        Рисует экран смерти.
+        :return:
+        """
         self.screen.blit(DIEDWINDOW, (0, 0))
 
     def run(self):

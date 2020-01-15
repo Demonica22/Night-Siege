@@ -34,6 +34,7 @@ class Enemy(pygame.sprite.Sprite):
         if not self.moving:
             x = self.rect.x
             y = self.rect.y
+            # Проверяет, не дошел ли монстр до конца
             if 0 <= x - self.board.cell_size < self.board.width:
                 if (x - self.board.cell_size, y) == self.board.end_pos:
                     self.board.hp_left -= self.damage
@@ -50,6 +51,7 @@ class Enemy(pygame.sprite.Sprite):
                 if (x + self.board.cell_size, y) == self.board.end_pos:
                     self.board.hp_left -= self.damage
                     self.hp = 0
+            # Нахождение текущего направления движения монстра
             if self.rect.x // self.board.cell_size + 1 < len(self.board.board[0]) and \
                     self.board.board[(self.rect.y - self.board.offset[1]) // self.board.cell_size][
                         self.rect.x // 30 + 1] == "0" \
@@ -80,6 +82,7 @@ class Enemy(pygame.sprite.Sprite):
                 self.moving = "up"
                 self.rect.y -= self.speed
         else:
+            # Двигает монстра в нужном направлении, если необходимо, то разворачивает его.
             self.passed_cells.add(
                 ((self.rect.y - self.board.offset[1]) // self.board.cell_size, self.rect.x // self.board.cell_size))
             if self.moving == "right":

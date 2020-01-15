@@ -18,7 +18,7 @@ class Board:
         self.cell_size = 30
         self.screen = screen
         self.offset = (0, 60)
-        pygame.display.set_mode((width * 30, height * 30 + self.offset[1]))
+        pygame.display.set_mode((width * self.cell_size, height * self.cell_size + self.offset[1]))
         self.width = width * self.cell_size
         self.height = height * self.cell_size
         self.board = board
@@ -30,6 +30,10 @@ class Board:
         self.enemy_rate = 1  # кол-во монстров в секунду
 
     def render(self):
+        """
+        Отрисовывает доску и верхнюю панель
+        :return: None
+        """
         for elem in range(len(self.board)):
             for cell in range(len(self.board[elem])):
                 x = cell * self.cell_size
@@ -44,7 +48,6 @@ class Board:
                     self.start_pos = (x, y)
                 else:
                     self.screen.blit(WALL, (x, y))
-                # pygame.draw.rect(self.screen, (0, 0, 0), (x, y, self.cell_size, self.cell_size), 1)
         self.screen.blit(COINS, (self.width - 3 * COINS.get_width() - 115, 2))
         self.screen.blit(TOWER, (self.width - self.width, 2))
         self.screen.blit(STOWER, (self.width - (self.width - 1.5 * STOWER.get_width()), 2))
@@ -70,7 +73,6 @@ class Board:
         self.retwave = ' ' * int(l) + str(self.current_wave) + ' ' * int(l)
         wavenum_text = font.render(str(self.retwave), 1, (255, 0, 0))
         self.screen.blit(wavenum_text, (self.width - 310, 30))
-        # TO MAKE NORMAL
         l1 = (5 - len(str(self.current_money))) / 2
         if self.current_money == 10:
             self.retmoney = '   ' * int(l1) + str(self.current_money) + ' ' * int(l1)
@@ -78,7 +80,6 @@ class Board:
             self.retmoney = '  ' * int(l1) + str(self.current_money) + ' ' * int(l1)
         moneytext = font.render(str(self.retmoney), 1, (100, 255, 100))
         self.screen.blit(moneytext, (self.width - 3 * COINS.get_width() - 127, 32))
-        # СДЕЛАТЬ НОРМАЛЬНО
         l2 = (3 - len(str(self.hp_left))) / 2
         if len(str(self.hp_left)) != 1:
             self.hp = ' ' * int(l2) + str(self.hp_left) + ' ' * int(l2)
@@ -88,6 +89,12 @@ class Board:
         self.screen.blit(hp_text, (self.width - 398, 30))
 
     def clicked(self, x, y):
+        """
+        Проверяет, был ли клик в область доски
+        :param x: int
+        :param y: int
+        :return: None
+        """
         if self.offset[0] <= x <= self.offset[0] + self.width:
             if self.offset[1] <= y <= self.offset[1] + self.height:
                 return True
