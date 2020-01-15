@@ -45,6 +45,20 @@ class Tower(pygame.sprite.Sprite):
                                           self.rect.y - (self.board.cell_size * self.range) + abs(delta)),
                                          (self.board.cell_size * (self.range * 2 + 1),
                                           self.board.cell_size * (self.range * 2 + 1) - abs(delta))), 1)
+            info_screen = pygame.Surface([125, 60], pygame.SRCALPHA, 32)
+            info_screen = info_screen.convert_alpha()
+            self.info = [f"{self.name} {self.level} уровня", f"С атакой {self.power}"]
+            delta_y = 10
+            if self.level < 3:
+                self.info.append(f"Цена улучшения {self.upgrade_cost[self.level]}")
+                delta_y = 20
+            font = pygame.font.SysFont("comicsansms", 10)
+            delta = 0
+            for line in self.info:
+                info_text = font.render(line, 1, (100, 255, 100))
+                info_screen.blit(info_text, (0, delta))
+                delta += 10
+            self.board.screen.blit(info_screen, (self.rect.x, self.rect.y - (20 + delta_y)))
 
 
 class FireTower(Tower):
@@ -54,6 +68,7 @@ class FireTower(Tower):
         self.images = [pygame.image.load("data/firetower" + str(n) + ".png").convert_alpha() for n in range(1, 4)]
         # Список изображений башен по уровням
         self.image = self.images[self.level - 1]
+        self.name = "Огненная башня"
         self.board = board
         self.range = 1
         self.power = 5
@@ -103,6 +118,7 @@ class IceTower(Tower):
         self.level = 1
         self.images = [pygame.image.load("data/icetower" + str(n) + ".png").convert_alpha() for n in range(1, 4)]
         # Список изображений башен по уровням
+        self.name = "Ледяная башня"
         self.image = self.images[self.level - 1]
         self.range = 2
         self.power = 2
@@ -174,6 +190,7 @@ class PlantTower(Tower):
         self.level = 1
         self.images = [pygame.image.load("data/planttower" + str(n) + ".png").convert_alpha() for n in range(1, 4)]
         # Список изображений башен по уровням
+        self.name = "Земленая башня"
         self.image = self.images[self.level - 1]
         self.range = 1
         self.power = 15

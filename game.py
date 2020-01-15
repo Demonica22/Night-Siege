@@ -15,7 +15,7 @@ class Game:
         self.running = True  # идет ли игра
         self.stoped = False  # была ли остановлена игра (проигрыш)
         self.hand = False  # занята ли рука ( после покупки башни кладутся в руку)
-        self.showing_range_tower = False  # отображает ли одна из бишен свою дальность атаки
+        self.showing_info_tower = False  # отображает ли одна из башен информацию о себе
         self.paused = False
         self.current_level = current_level
         self.all_enemies = pygame.sprite.Group()
@@ -36,7 +36,7 @@ class Game:
         self.running = True  # идет ли игра
         self.stoped = False  # была ли остановлена игра (проигрыш)
         self.hand = False  # занята ли рука ( после покупки башни кладутся в руку)
-        self.showing_range_tower = False  # отображает ли одна из бишен свою дальность атаки
+        self.showing_info_tower = False  # отображает ли одна из бишен свою дальность атаки
         self.paused = False
         self.all_enemies = pygame.sprite.Group()
         self.all_towers = pygame.sprite.Group()
@@ -103,20 +103,13 @@ class Game:
                 else:
                     self.pause_time -= 1
                 for event in pygame.event.get():
-                    if event.type == pygame.MOUSEMOTION:
-                        pos = event.pos
-                        for tower in self.all_towers:
-                            if tower.clicked(pos[0], pos[1]):
-                                print(1)
-                                info_screen = pygame.Surface((30, 50))
-                                self.screen.blit(info_screen, pos)
                     if event.type == pygame.QUIT:
                         self.running = False
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         pos = event.pos
                         if event.button == 1:
-                            if self.showing_range_tower:
-                                self.showing_range_tower.is_clicked = False
+                            if self.showing_info_tower:
+                                self.showing_info_tower.is_clicked = False
                             if 0 <= pos[0] <= 40 and 0 <= pos[1] <= 40:
                                 if not self.hand and self.board.current_money >= 5:
                                     self.board.current_money -= 5
@@ -149,8 +142,8 @@ class Game:
                                 if not self.hand:
                                     for tower in self.all_towers.sprites():
                                         if tower.clicked(pos[0], pos[1]):
-                                            self.showing_range_tower = tower
-                                            self.showing_range_tower.is_clicked = True
+                                            self.showing_info_tower = tower
+                                            self.showing_info_tower.is_clicked = True
                                 if self.board.board[(pos[1] - self.board.offset[1]) // 30][
                                     (pos[0] - self.board.offset[0]) // 30] == '#':
                                     if self.hand:
@@ -181,8 +174,8 @@ class Game:
                                     self.board.board[(tower.rect.y - self.board.offset[1]) // 30][
                                         (tower.rect.x - self.board.offset[0]) // 30] = "#"
                                     self.all_towers.remove(tower)
-                                    if self.showing_range_tower == tower:
-                                        self.showing_range_tower = False
+                                    if self.showing_info_tower == tower:
+                                        self.showing_info_tower = False
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_SPACE:
                             self.paused = True
@@ -197,8 +190,8 @@ class Game:
                             tower.shots.remove(shot)
                     tower.shots.draw(self.screen)
                     tower.shots.update()
-                if self.showing_range_tower:
-                    self.showing_range_tower.draw_range()
+                if self.showing_info_tower:
+                    self.showing_info_tower.draw_range()
                 for tower in self.all_towers.sprites():
                     if self.current_time % 15 == 0:
                         tower.attack(self.all_enemies.sprites())
