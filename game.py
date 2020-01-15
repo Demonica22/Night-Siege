@@ -1,6 +1,6 @@
 import pygame
 from enemies import Zombie, Wizard, Warrior
-from tower import Tower, IceTower, FireTower, PlantTower
+from tower import IceTower, FireTower, PlantTower
 from board import Board
 from level_scaner import scan_level
 import random
@@ -9,14 +9,15 @@ DIEDWINDOW = pygame.image.load('data/diedwindow.png')
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, current_level="first"):
         self.screen = pygame.display.set_mode((600, 600))
-        self.board = Board(*scan_level("new_level"), self.screen)
+        self.board = Board(*scan_level(current_level), self.screen)
         self.running = True  # идет ли игра
         self.stoped = False  # была ли остановлена игра (проигрыш)
         self.hand = False  # занята ли рука ( после покупки башни кладутся в руку)
         self.showing_range_tower = False  # отображает ли одна из бишен свою дальность атаки
         self.paused = False
+        self.current_level = current_level
         self.all_enemies = pygame.sprite.Group()
         self.all_towers = pygame.sprite.Group()
         self.clock = pygame.time.Clock()
@@ -31,7 +32,7 @@ class Game:
         :return: None
         """
         self.screen = pygame.display.set_mode((600, 600))
-        self.board = Board(*scan_level("new_level"), self.screen)
+        self.board = Board(*scan_level(self.current_level), self.screen)
         self.running = True  # идет ли игра
         self.stoped = False  # была ли остановлена игра (проигрыш)
         self.hand = False  # занята ли рука ( после покупки башни кладутся в руку)
