@@ -2,7 +2,7 @@ import pygame
 
 pygame.init()
 
-LEVELSELECTIONWINDOW = pygame.image.load("data/startdisplay.png")
+LEVELSELECTIONWINDOW = pygame.image.load("data/level_selected.png")
 
 
 class LevelSelector:
@@ -23,11 +23,11 @@ class LevelSelector:
                     self.running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = event.pos
-                    if 330 <= pos[0] <= 540 and 163 <= pos[1] <= 225:
+                    if 32 <= pos[0] <= 288 and 204 <= pos[1] <= 450:
                         self.running = False
                         self.started = True
                         self.level_chosen = "first"
-                    elif 325 <= pos[0] <= 540 and 245 <= pos[1] <= 309:
+                    elif 320 <= pos[0] <= 566 and 205 <= pos[1] <= 455:
                         self.running = False
                         self.started = True
                         self.level_chosen = "second"

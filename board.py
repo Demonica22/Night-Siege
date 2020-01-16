@@ -26,7 +26,7 @@ class Board:
         self.play = True
         self.current_money = 10
         self.current_wave = 1
-        self.hp_left = 100
+        self.hp_left = 1
         self.fps = 30
         self.enemy_rate = 1  # кол-во монстров в секунду
 
