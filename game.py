@@ -115,7 +115,6 @@ class Game:
                         self.running = False
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         pos = event.pos
-                        print(pos)
                         if event.button == 1:
                             if self.showing_info_tower:
                                 self.showing_info_tower.is_clicked = False
@@ -229,7 +228,6 @@ class Game:
                 for event in pygame.event.get():
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         pos = event.pos
-                        print(pos)
                         if event.button == 1:
                             if 465 <= pos[0] <= 524 and 0 <= pos[1] <= 60:
                                 self.paused = False
