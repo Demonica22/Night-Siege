@@ -1,11 +1,15 @@
 import pygame
-from game import Game
+from Game import Game
 from Start import Start
+from Level_selector import LevelSelector
 
 pygame.init()
 pygame.display.set_caption("Night Siege")
 start = Start()
 start.run()
 if start.started:
-    game = Game()
-    game.run()
+    level_selector = LevelSelector()
+    level_selector.run()
+    if level_selector.started:
+        game = Game(level_selector.level_chosen)
+        game.run()
