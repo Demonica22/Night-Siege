@@ -1,9 +1,11 @@
 import pygame
 from game import Game
+from Start import Start
 
 pygame.init()
-pygame.display.set_caption("TD game")
-pygame.mixer.music.load('sounds\maintheme.mp3')
-pygame.mixer.music.play(-1)
-game = Game()
-game.run()
+pygame.display.set_caption("Night Siege")
+start = Start()
+start.run()
+if start.started:
+    game = Game()
+    game.run()
