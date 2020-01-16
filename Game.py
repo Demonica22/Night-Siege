@@ -13,7 +13,7 @@ DIEDWINDOW = pygame.image.load('data/diedwindow.png')
 
 
 class Game:
-    def __init__(self, current_level="second"):
+    def __init__(self, current_level='first'):
         self.screen = pygame.display.set_mode((600, 600))
         self.board = Board(*scan_level(current_level), self.screen)
         self.running = True  # идет ли игра
