@@ -3,7 +3,7 @@ from statistics_getter import get_statistics
 
 pygame.init()
 
-STATS_WINDOW = pygame.image.load("data/startdisplay.png")
+STATS_WINDOW = pygame.image.load("data/score.png")
 
 
 class Stats:
@@ -16,11 +16,11 @@ class Stats:
         self.screen.blit(STATS_WINDOW, (0, 0))
         font = pygame.font.SysFont("comicsansms", 20)
         text = font.render(str(stats[0]) + " waves", 1, (0, 0, 0))
-        self.screen.blit(text, (200, 90))
+        self.screen.blit(text, (250, 70))
         text = font.render(str(stats[1]) + " waves", 1, (0, 0, 0))
-        self.screen.blit(text, (200, 130))
+        self.screen.blit(text, (250, 110))
         text = font.render(str(stats[2]) + " waves", 1, (0, 0, 0))
-        self.screen.blit(text, (200, 180))
+        self.screen.blit(text, (250, 160))
         pygame.display.flip()
         while self.running:
             for event in pygame.event.get():

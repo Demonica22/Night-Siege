@@ -55,7 +55,7 @@ class Tower(pygame.sprite.Sprite):
             font = pygame.font.SysFont("comicsansms", 10)
             delta = 0
             for line in self.info:
-                info_text = font.render(line, 1, (100, 255, 100))
+                info_text = font.render(line, 1, (255, 255, 255))
                 info_screen.blit(info_text, (0, delta))
                 delta += 10
             self.board.screen.blit(info_screen, (self.rect.x, self.rect.y - (20 + delta_y)))
