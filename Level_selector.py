@@ -21,6 +21,9 @@ class LevelSelector:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == 27:
+                        self.running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = event.pos
                     if 32 <= pos[0] <= 288 and 204 <= pos[1] <= 450:

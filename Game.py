@@ -7,6 +7,7 @@ from Towers.IceTower import IceTower
 from Towers.PlantTower import PlantTower
 from board import Board
 from level_scaner import scan_level
+from statistics_updater import update_statistics
 import random
 
 DIEDWINDOW = pygame.image.load('data/diedwindow.png')
@@ -61,6 +62,9 @@ class Game:
         :return:
         """
         self.screen.blit(DIEDWINDOW, (0, 0))
+        font = pygame.font.SysFont("comicsansms", 20)
+        text = font.render(str(self.board.current_wave) + " waves", 1, (0, 0, 0))
+        self.screen.blit(text, (328, 564))
 
     def run(self):
         pygame.mixer.music.load('sounds\soundtrack.mp3')
@@ -186,6 +190,9 @@ class Game:
                                     self.all_towers.remove(tower)
                                     if self.showing_info_tower == tower:
                                         self.showing_info_tower = False
+                    elif event.type == pygame.KEYDOWN:
+                        if event.key == 27:
+                            self.running = False
                 self.screen.fill((71, 45, 23))
                 self.board.render()
                 self.all_towers.draw(self.screen)
@@ -216,14 +223,16 @@ class Game:
                 pygame.display.flip()
                 self.clock.tick(self.board.fps)
             elif self.stoped:
+                update_statistics(self.board.current_wave)
                 self.draw_die_win()
                 pygame.display.flip()
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.running = False
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_SPACE:
-                            self.restart()
+                while self.running:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            self.running = False
+                        if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_SPACE:
+                                self.restart()
             elif self.paused:
                 for event in pygame.event.get():
                     if event.type == pygame.MOUSEBUTTONDOWN:
