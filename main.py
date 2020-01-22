@@ -4,6 +4,7 @@ from Start import Start
 from Level_selector import LevelSelector
 from Stats_window import Stats
 
+
 pygame.init()
 pygame.display.set_caption("Night Siege")
 start = Start()
