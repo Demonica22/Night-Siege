@@ -84,7 +84,7 @@ class Game:
                                 self.enemies_delta_hp += 5
                             enemy = Zombie(self.all_enemies, self.board)
                             enemy.max_hp = enemy.hp
-                        elif 3 < self.board.current_wave <= 10:
+                        elif 5 < self.board.current_wave <= 10:
                             self.enemies_delta_hp += 10
                             self.board.enemy_rate = 2
                             enemy = random.choice([1, 2])
@@ -93,10 +93,9 @@ class Game:
                             else:
                                 enemy = Wizard(self.all_enemies, self.board)
                             enemy.hp += self.enemies_delta_hp
-                            enemy.hp *= 3
                             enemy.max_hp = enemy.hp
                         else:
-                            self.enemies_delta_hp += 20
+                            self.enemies_delta_hp += 30
                             self.board.enemy_rate = 3
                             enemy = random.choice([1, 2, 3])
                             if enemy == 1:
@@ -106,11 +105,9 @@ class Game:
                             else:
                                 enemy = Warrior(self.all_enemies, self.board)
                             enemy.hp += self.enemies_delta_hp
-                            enemy.hp *= 5
                             enemy.max_hp = enemy.hp
                         if self.board.current_wave >= 20:
-                            self.enemies_delta_hp *= 10
-                            enemy.hp += self.enemies_delta_hp
+                            self.enemies_delta_hp += 50
                             enemy.max_hp = enemy.hp
                 else:
                     self.pause_time -= 1
