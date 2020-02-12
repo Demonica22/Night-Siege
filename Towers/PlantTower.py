@@ -49,6 +49,7 @@ class PlantTower(Tower):
                 self.board.current_money -= self.upgrade_cost[self.level]
                 self.level += 1
                 self.range += 1
+                self.power *= 2
                 self.image = self.images[self.level - 1]
                 self.board.board[(self.rect.y - self.board.offset[1]) // 30][
                     (self.rect.x - self.board.offset[0]) // 30] = \

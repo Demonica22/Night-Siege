@@ -80,12 +80,10 @@ class Game:
                     if self.enemies_left != 0 and self.current_time % (self.board.fps // self.board.enemy_rate) == 0:
                         self.enemies_left -= 1
                         if self.board.current_wave <= 5:
-                            if self.board.current_wave > 3:
-                                self.enemies_delta_hp += 5
                             enemy = Zombie(self.all_enemies, self.board)
                             enemy.max_hp = enemy.hp
                         elif 5 < self.board.current_wave <= 10:
-                            self.enemies_delta_hp += 10
+                            self.enemies_delta_hp += 5
                             self.board.enemy_rate = 2
                             enemy = random.choice([1, 2])
                             if enemy == 1:
@@ -95,7 +93,7 @@ class Game:
                             enemy.hp += self.enemies_delta_hp
                             enemy.max_hp = enemy.hp
                         else:
-                            self.enemies_delta_hp += 30
+                            self.enemies_delta_hp += 15
                             self.board.enemy_rate = 3
                             enemy = random.choice([1, 2, 3])
                             if enemy == 1:
@@ -107,7 +105,7 @@ class Game:
                             enemy.hp += self.enemies_delta_hp
                             enemy.max_hp = enemy.hp
                         if self.board.current_wave >= 20:
-                            self.enemies_delta_hp += 50
+                            self.enemies_delta_hp += 30
                             enemy.max_hp = enemy.hp
                 else:
                     self.pause_time -= 1
@@ -187,9 +185,6 @@ class Game:
                                     self.all_towers.remove(tower)
                                     if self.showing_info_tower == tower:
                                         self.showing_info_tower = False
-                    elif event.type == pygame.KEYDOWN:
-                        if event.key == 27:
-                            self.running = False
                 self.screen.fill((71, 45, 23))
                 self.board.render()
                 self.all_towers.draw(self.screen)
